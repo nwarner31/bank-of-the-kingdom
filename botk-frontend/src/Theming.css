@@ -1,0 +1,19 @@
+.main-color-bg {
+    background-color: var(--maincolor);
+    color: var(--maintextcolor);
+}
+
+.main-color-text {
+    background-color: var(--maintextcolor);
+    color: var(--maincolor);
+}
+
+.secondary-color-bg {
+    background-color: var(--secondarycolor);
+    color: var(--secondarytextcolor);
+}
+
+.secondary-color-text {
+    background-color: var(--secondarytextcolor);
+    color: var(--secondarycolor);
+}

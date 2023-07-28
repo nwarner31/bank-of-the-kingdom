@@ -1,16 +1,18 @@
 import { useState } from 'react';
+import '../../Theming.css';
 
 interface hbprops {
-    mainColor: string,
-    secondColor: string,
     text: string,
-    className?: string;
+    baseClass: string,
+    hoverClass: string,
+    className?: string,
+    clickAction?: () => void
 }
 
 function HoverButton(props: hbprops) {
     const [hover, setHover] = useState(false);
 
-    const {mainColor, secondColor, text} = props;
+    const { text} = props;
 
     function handleMouseEnter() {
         setHover(true);
@@ -20,8 +22,8 @@ function HoverButton(props: hbprops) {
         setHover(false)
     }
 
-    return <span className={props.className ?? ""} style={{backgroundColor: hover ? secondColor : mainColor, color: hover ? mainColor: secondColor}} onMouseEnter={handleMouseEnter}
-                 onMouseLeave={handleMouseLeave}>{text}
+    return <span className={(props.className + " " ?? "") + (hover ? props.hoverClass : props.baseClass)}  onMouseEnter={handleMouseEnter}
+                 onMouseLeave={handleMouseLeave} onClick={props.clickAction}>{text}
 
     </span>
 }

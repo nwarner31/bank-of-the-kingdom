@@ -6,7 +6,11 @@ export enum Actions {
     ChangeTheme
 }
 
-const myReducer = (state = {loggedIn: false, theme: {'mainColor': 'red'}, user: null }, action: { type: Actions, payload: any }) => {
+const myReducer = (state = {loggedIn: false, theme: {"mainColor": "rgb(232, 15, 39)",
+        "mainTextColor": "white",
+        "secondaryColor": "#FCD1A7",
+        "secondaryTextColor": "black",
+        "headImg": "toad-head.jpg"}, user: null }, action: { type: Actions, payload: any }) => {
     switch(action.type) {
         case Actions.Login: {
             return { ...state, loggedIn: true, user: action.payload }

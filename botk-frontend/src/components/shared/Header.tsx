@@ -2,6 +2,9 @@ import './Header.css';
 import '../../Main.css'
 import HoverButton from "../controls/HoverButton";
 import {useSelector} from "react-redux";
+import { Link } from "react-router-dom";
+import { useMediaQuery } from "react-responsive";
+import '../../Theming.css';
 
 function Header() {
     // @ts-ignore
@@ -9,28 +12,32 @@ function Header() {
     // @ts-ignore
     const loggedIn = useSelector(state => state.loggedIn);
 
+    const useMobileLayout = useMediaQuery({query: '(max-width: 600px)'});
+
     const navButtons = loggedIn ?
         <>
-            <HoverButton mainColor={theme ? theme.mainColor : "green"} secondColor={theme ? theme.textColor: "black"} text="Dashboard" />
-            <HoverButton mainColor={theme ? theme.mainColor : "green"} secondColor={theme ? theme.textColor: "black"} text="Logout" />
+            <HoverButton text="Dashboard" className='header-button' baseClass='main-color-bg' hoverClass='main-color-text' />
+            <HoverButton text="Logout" className='header-button' baseClass='main-color-bg' hoverClass='main-color-text' />
         </> :
         <>
-            <HoverButton className='header-button' mainColor={theme ? theme.mainColor : "green"} secondColor={theme ? theme.textColor: "black"} text="Login" />
-            <HoverButton className='header-button' mainColor={theme ? theme.mainColor : "green"} secondColor={theme ? theme.textColor: "black"} text="Register" />
+            <Link to='/login'><HoverButton className='header-button' text="Login" baseClass='main-color-bg' hoverClass='main-color-text' /></Link>
+            <Link to='/register'><HoverButton className='header-button' text="Register" baseClass='main-color-bg' hoverClass='main-color-text' /></Link>
         </>
     return (
-        <div className='nav-bar' style={{backgroundColor: theme ? theme.mainColor : "green", color: theme ? theme.textColor: "black"}}>
+        <div className='nav-bar main-color-bg' >
             <div className='nav-body'>
                 <span className='left-content'>
+                    <Link to='/' >
                     <img src={`./resources/images/${theme.headImg}`} className='header-image' />
                     <span className='header-title-box'>
-                        <span className='header-title'><h1 className='headline title-headline'>Bank of the Kingdom</h1></span>
+                        <span className='header-title header-main-title'><h1 className='headline title-headline'>Bank of the Kingdom</h1></span>
                         <span className='header-title'>Trusted by Toads and Goombas</span>
                     </span>
-
+                    </Link>
                 </span>
-                <span className='right-content'>{navButtons}</span>
+                <span className='right-content'>{useMobileLayout ? '' :  navButtons}</span>
             </div>
+            { useMobileLayout && <div className='right-content'><div className='header-button-group'>{navButtons}</div></div>}
         </div>
     )
 }

@@ -1,5 +1,6 @@
 .nav-bar {
-    background-color: var(--mainColor, green);
+    background-color: var(--maincolor);
+    color: var(--maintextcolor);
     padding: 0 15px;
 }
 
@@ -10,10 +11,15 @@
 
 }
 
+.nav-bar a {
+    color: var(--maintextcolor);;
+}
+
 .left-content {
     left: 0px;
     margin-top: 10px;
     margin-bottom: 10px;
+    color: var(--maintextcolor);
 }
 
 .header-title-box {
@@ -27,6 +33,11 @@
 
 .header-title {
     display: flex;
+}
+
+.header-main-title {
+    text-decoration: underline ;
+    text-decoration-thickness: 3px;
 }
 
 .header-image {
@@ -49,6 +60,27 @@
     padding-right: 20px;
     border-width: 0 3px;
     border-style: solid;
-    border-color: white;
+    border-color: var(--maintextcolor);
     vertical-align: middle;
+}
+
+.header-button:hover {
+    background-color: var();
+}
+
+@media screen and (max-width: 600px) {
+    .header-button {
+        border-width: 3px;
+        padding: 25px;
+        margin-left: auto;
+        margin-right: 0;
+    }
+    .header-button-group {
+        float: right;
+    }
+    .right-content::after {
+        content: "";
+        display: table;
+        clear: both;
+    }
 }
