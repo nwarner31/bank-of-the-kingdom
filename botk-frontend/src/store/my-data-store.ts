@@ -10,13 +10,13 @@ const myReducer = (state = {loggedIn: false, theme: {"mainColor": "rgb(232, 15, 
         "mainTextColor": "white",
         "secondaryColor": "#FCD1A7",
         "secondaryTextColor": "black",
-        "headImg": "toad-head.jpg"}, user: null }, action: { type: Actions, payload: any }) => {
+        "headImg": "toad-head.jpg"}, customer: null, token: null }, action: { type: Actions, payload: any }) => {
     switch(action.type) {
         case Actions.Login: {
-            return { ...state, loggedIn: true, user: action.payload }
+            return { ...state, loggedIn: true, customer: action.payload.customer, token: action.payload.token }
         }
         case Actions.Logout: {
-            return { ...state, loggedIn: false, user: null };
+            return { ...state, loggedIn: false, user: null, token: null };
         }
         case Actions.ChangeTheme: {
             return { ...state, theme: action.payload }

@@ -8,6 +8,7 @@ import Login from "./components/pages/Login";
 import { useSelector, useDispatch } from "react-redux";
 import { Actions } from './store/my-data-store';
 import themes from './themes.json';
+import Dashboard from "./components/pages/Dashboard";
 
 
 function App() {
@@ -54,6 +55,7 @@ function App() {
             <Route path='/' element={<Home />} />
             <Route path='/register' element={<Register />} />
             <Route path='/login' element={<Login />} />
+            <Route path='/dashboard' element={<Dashboard />} />
         </Routes>
     </div>
   );

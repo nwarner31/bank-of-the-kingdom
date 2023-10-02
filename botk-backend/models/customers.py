@@ -13,3 +13,5 @@ class CustomerModel(db.Model):
     email = db.Column(db.String(80), nullable=False)
     username = db.Column(db.String(60), nullable=False, unique=True)
     password = db.Column(db.String(80), nullable=False)
+
+

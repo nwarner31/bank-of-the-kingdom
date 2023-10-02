@@ -5,6 +5,8 @@ class LoginSchema(Schema):
     username = fields.Str(required=True)
     password = fields.Str(required=True)
 
+class LogoutSchema(Schema):
+    token = fields.Str()
 
 class CustomerSchema(Schema):
     id = fields.Int(dump_only=True)
@@ -17,3 +19,8 @@ class CustomerSchema(Schema):
     email = fields.Str(required=True)
     username = fields.Str(required=True)
     password = fields.Str(required=True, load_only=True)
+
+
+class CustomerLoginSchema(Schema):
+    customer = fields.Nested(CustomerSchema)
+    token = fields.Str()

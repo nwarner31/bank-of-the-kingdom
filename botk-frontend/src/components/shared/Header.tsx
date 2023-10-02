@@ -1,8 +1,10 @@
 import './Header.css';
 import '../../Main.css'
+import properties from "../../utility/data/application.json";
 import HoverButton from "../controls/HoverButton";
-import {useSelector} from "react-redux";
-import { Link } from "react-router-dom";
+import { Actions } from '../../store/my-data-store';
+import {useDispatch, useSelector} from "react-redux";
+import {Link, useNavigate} from "react-router-dom";
 import { useMediaQuery } from "react-responsive";
 import '../../Theming.css';
 
@@ -13,11 +15,23 @@ function Header() {
     const loggedIn = useSelector(state => state.loggedIn);
 
     const useMobileLayout = useMediaQuery({query: '(max-width: 600px)'});
+    // @ts-ignore
+    const token = useSelector(state => state.token);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    function logout() {
+        fetch(properties.url + "/logout", {method: 'POST',
+            headers: {'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`}}).then(response => {
+            dispatch(({type: Actions.Logout}));
+            navigate("/");
+        })
 
+    }
     const navButtons = loggedIn ?
         <>
             <HoverButton text="Dashboard" className='header-button' baseClass='main-color-bg' hoverClass='main-color-text' />
-            <HoverButton text="Logout" className='header-button' baseClass='main-color-bg' hoverClass='main-color-text' />
+            <HoverButton text="Logout" className='header-button' baseClass='main-color-bg' hoverClass='main-color-text' clickAction={logout} />
         </> :
         <>
             <Link to='/login'><HoverButton className='header-button' text="Login" baseClass='main-color-bg' hoverClass='main-color-text' /></Link>

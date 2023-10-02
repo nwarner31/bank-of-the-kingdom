@@ -3,11 +3,17 @@ import {ChangeEvent, useState} from "react";
 import '../../Theming.css';
 import './Login.css';
 import properties from "../../utility/data/application.json";
+import {useDispatch} from "react-redux";
+import {Actions} from "../../store/my-data-store";
+import {useNavigate} from "react-router-dom";
 
 
 function Login() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
    function updateUsername(username: string) {
         setUsername(username);
@@ -23,7 +29,7 @@ function Login() {
 
     function loginUser() {
         console.log(username + " " + password);
-        if (username.trim() == "" || password.trim() == "") {
+        if (username.trim() === "" || password.trim() === "") {
 
         } else {
             const body = JSON.stringify({"username": username, "password": password});
@@ -32,7 +38,21 @@ function Login() {
                 headers: {'Content-Type': 'application/json'}}).then(response => {
                 console.log(response.status);
                 return response.json()
-            }).then(data => { console.log(data);alert(data.code)});
+            }).then(data => {
+                console.log(data);
+                console.log("Then");
+                //alert(data.code);
+
+                if(data.customer) {
+                    dispatch(({type: Actions.Login, payload: {customer: data.customer, token: data.token}}));
+
+                    navigate("/dashboard");
+                } else {
+                    console.log("Error");
+                }
+            }).catch(error => {
+                console.log(error);
+            });
         }
     }
 

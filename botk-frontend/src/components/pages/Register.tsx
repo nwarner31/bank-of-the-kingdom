@@ -20,7 +20,7 @@ function Register() {
     const [errorInfo, setErrorInfo] = useState(initialErrorState);
     const [password2, setPassword2] = useState("")
     function updateUserInfo(fieldName: string, newValue: string) {
-        if (fieldName == "password2") {
+        if (fieldName === "password2") {
             setPassword2(newValue)
         } else {
             setUserInfo((prevState => {
@@ -31,14 +31,14 @@ function Register() {
     }
 
     function validateField(fieldName: string, value: string): boolean {
-        if (value.trim() == "") {
+        if (value.trim() === "") {
             return false;
         } else {
-            if (fieldName == "email") {
+            if (fieldName === "email") {
                 if (!value.includes("@") || !value.includes(".") || value.lastIndexOf(".") < value.indexOf("@")) {
                     return false;
                 }
-            } else if (fieldName == "password") {
+            } else if (fieldName === "password") {
                 return value.length >= 6;
             }
         }
@@ -65,7 +65,7 @@ function Register() {
         const body = JSON.stringify(userInfo);
         let isValid = true;
         for (const [key, value] of Object.entries(userInfo)) {
-            if (key != "address2") {
+            if (key !== "address2") {
                 if (!validateField(key, value)) {
                     //alert(`${key} is invalid`);
                     isValid = false;
