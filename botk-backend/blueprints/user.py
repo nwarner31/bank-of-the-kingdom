@@ -12,7 +12,7 @@ from flask import jsonify, abort
 
 from flask_cors import cross_origin
 
-from models import CustomerModel
+from models.customers import CustomerModel
 from models.blocklist import BLOCKLIST
 from schemas.customer_schemas import CustomerSchema, LoginSchema, CustomerLoginSchema, LogoutSchema
 
@@ -54,7 +54,7 @@ class Logout(MethodView):
 class Register(MethodView):
 
     @blp.arguments(CustomerSchema)
-    @blp.response(200, CustomerSchema)
+    @blp.response(200, CustomerLoginSchema)
     def post(self, customer_data):
         print(customer_data)
         password_bytes = (customer_data['password'] + properties.pepper).encode('utf-8')
@@ -73,4 +73,8 @@ class Register(MethodView):
             abort(200, {"message": "An error occurred"})
 
         print(customer)
-        return customer
+        access_token = create_access_token(customer.id)
+        cs = CustomerLoginSchema()
+        cs.customer = customer
+        cs.token = access_token
+        return cs

@@ -40,8 +40,6 @@ function Login() {
                 return response.json()
             }).then(data => {
                 console.log(data);
-                console.log("Then");
-                //alert(data.code);
 
                 if(data.customer) {
                     dispatch(({type: Actions.Login, payload: {customer: data.customer, token: data.token}}));

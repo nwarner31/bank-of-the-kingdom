@@ -1,9 +1,11 @@
-import {useSelector} from "react-redux";
+import {useSelector, useDispatch} from "react-redux";
+import {useNavigate} from "react-router-dom";
 import './Register.css';
 import '../../Theming.css';
 import { ChangeEvent, useState} from "react";
 import HoverButton from "../controls/HoverButton";
 import properties from '../../utility/data/application.json';
+import {Actions} from "../../store/my-data-store";
 
 
 function Register() {
@@ -19,6 +21,10 @@ function Register() {
     const [userInfo, setUserInfo] = useState(initialUserState);
     const [errorInfo, setErrorInfo] = useState(initialErrorState);
     const [password2, setPassword2] = useState("")
+
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
     function updateUserInfo(fieldName: string, newValue: string) {
         if (fieldName === "password2") {
             setPassword2(newValue)
@@ -82,7 +88,15 @@ function Register() {
                 headers: {'Content-Type': 'application/json'}}).then(response => {
                 console.log(response);
                 return response.json()
-            }).then(data => { alert(data)});
+            }).then(data => {
+                if(data.customer) {
+                    dispatch(({type: Actions.Login, payload: {customer: data.customer, token: data.token}}));
+
+                    navigate("/dashboard");
+                } else {
+                    console.log("Error");
+                }
+            });
         }
 
     }
