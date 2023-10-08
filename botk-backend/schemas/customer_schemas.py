@@ -5,8 +5,10 @@ class LoginSchema(Schema):
     username = fields.Str(required=True)
     password = fields.Str(required=True)
 
+
 class LogoutSchema(Schema):
     token = fields.Str()
+
 
 class CustomerSchema(Schema):
     id = fields.Int(dump_only=True)

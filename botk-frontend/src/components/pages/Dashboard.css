@@ -1,0 +1,32 @@
+.dashboard-section::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.dashboard-section {
+    float: left;
+    width: 46%;
+    padding-right: 2%;
+    padding-left: 2%;
+
+}
+
+.dashboard-page {
+    max-width: 1200px;
+    margin: auto;
+    padding-bottom: 30px;
+}
+
+.dashboard-link {
+    text-decoration: none;
+}
+
+.dashboard-button {
+    width: 90%;
+    display: block;
+    border-radius: 10px;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    text-decoration: none;
+}

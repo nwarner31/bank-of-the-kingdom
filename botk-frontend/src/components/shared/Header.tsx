@@ -23,6 +23,9 @@ function Header() {
         fetch(properties.url + "/logout", {method: 'POST',
             headers: {'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`}}).then(response => {
+            return response.json();
+        }).then(data => {
+            console.log(data);
             dispatch(({type: Actions.Logout}));
             navigate("/");
         })
@@ -30,7 +33,7 @@ function Header() {
     }
     const navButtons = loggedIn ?
         <>
-            <HoverButton text="Dashboard" className='header-button' baseClass='main-color-bg' hoverClass='main-color-text' />
+            <Link to='/dashboard'> <HoverButton text="Dashboard" className='header-button' baseClass='main-color-bg' hoverClass='main-color-text' /></Link>
             <HoverButton text="Logout" className='header-button' baseClass='main-color-bg' hoverClass='main-color-text' clickAction={logout} />
         </> :
         <>

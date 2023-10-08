@@ -48,7 +48,8 @@ class Logout(MethodView):
     def post(self):
         jti = get_jwt()['jti']
         BLOCKLIST.add(jti)
-        return { "message": "You have logged out" }
+        return {"message": "You have logged out"}
+
 
 @blp.route("/register")
 class Register(MethodView):
@@ -70,7 +71,7 @@ class Register(MethodView):
         except IntegrityError:
             abort(499, {"message": "A user with that username already exists"})
         except SQLAlchemyError:
-            abort(200, {"message": "An error occurred"})
+            abort(500, {"message": "An error occurred"})
 
         print(customer)
         access_token = create_access_token(customer.id)

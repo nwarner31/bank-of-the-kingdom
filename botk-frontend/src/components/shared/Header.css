@@ -64,9 +64,7 @@
     vertical-align: middle;
 }
 
-.header-button:hover {
-    background-color: var();
-}
+
 
 @media screen and (max-width: 600px) {
     .header-button {

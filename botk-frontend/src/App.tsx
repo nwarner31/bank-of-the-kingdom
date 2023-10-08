@@ -5,6 +5,7 @@ import Header from './components/shared/Header';
 import Home from "./components/pages/Home";
 import Register from "./components/pages/Register";
 import Login from "./components/pages/Login";
+import CreateAccount from "./components/pages/CreateAccount";
 import { useSelector, useDispatch } from "react-redux";
 import { Actions } from './store/my-data-store';
 import themes from './themes.json';
@@ -56,6 +57,7 @@ function App() {
             <Route path='/register' element={<Register />} />
             <Route path='/login' element={<Login />} />
             <Route path='/dashboard' element={<Dashboard />} />
+            <Route path='/create-account' element={<CreateAccount />} />
         </Routes>
     </div>
   );
