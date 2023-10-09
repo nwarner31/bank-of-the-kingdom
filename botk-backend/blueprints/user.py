@@ -27,9 +27,12 @@ class Login(MethodView):
         password_bytes = (login_info['password'] + properties.pepper).encode('utf-8')
         salt = bcrypt.gensalt()
         hash_password = bcrypt.hashpw(password_bytes, salt)
+        print(login_info['username'])
         try:
             customer = CustomerModel.query.filter(CustomerModel.username == login_info['username']).first()
+            print("Test")
             if customer and bcrypt.checkpw(password_bytes, customer.password.encode('utf-8')):
+
                 access_token = create_access_token(customer.id)
                 cs = CustomerLoginSchema()
                 cs.customer = customer
@@ -40,6 +43,8 @@ class Login(MethodView):
 
         except SQLAlchemyError:
             abort(500, {"message": "There was an error"})
+        except Exception as e:
+            print(e)
 
 
 @blp.route("/logout")

@@ -7,4 +7,6 @@ class AccountModel(db.Model):
     account_name = db.Column(db.String(60), nullable=False)
     account_type = db.Column(db.String(30), nullable=False)
     balance = db.Column(db.Float(precision=2), nullable=False)
-    customer_id = db.Column(db.Integer, db.ForeignKey("customers.id"), unique=False, nullable=False)
+    customer_id = db.Column(db.Integer(), db.ForeignKey("customers.id"), nullable=False)
+
+    customer = db.relationship("CustomerModel", back_populates="accounts")

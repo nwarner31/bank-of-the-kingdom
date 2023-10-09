@@ -14,4 +14,6 @@ class CustomerModel(db.Model):
     username = db.Column(db.String(60), nullable=False, unique=True)
     password = db.Column(db.String(80), nullable=False)
 
+    accounts = db.relationship("AccountModel", back_populates="customer", lazy="dynamic")
+
 

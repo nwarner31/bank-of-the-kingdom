@@ -39,7 +39,7 @@ function Login() {
                 console.log(response.status);
                 return response.json()
             }).then(data => {
-                console.log(data);
+                //console.log(data);
 
                 if(data.customer) {
                     dispatch(({type: Actions.Login, payload: {customer: data.customer, token: data.token}}));

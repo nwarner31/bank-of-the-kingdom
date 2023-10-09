@@ -41,3 +41,5 @@ class Account(MethodView):
 
         except SQLAlchemyError:
             abort(500, {"message": "There was a server error"})
+
+        return {"message": "Test"}

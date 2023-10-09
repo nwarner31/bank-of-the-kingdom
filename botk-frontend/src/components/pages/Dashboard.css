@@ -1,4 +1,4 @@
-.dashboard-section::after {
+.dashboard-main::after {
     content: "";
     display: table;
     clear: both;
@@ -29,4 +29,29 @@
     padding-bottom: 10px;
     padding-top: 10px;
     text-decoration: none;
+}
+
+.account-details {
+    border-radius: 10px;
+    cursor: pointer;
+    padding: 10px;
+}
+
+.ad-name {
+    text-align: left;
+    text-decoration: underline;
+    font-weight: 800;
+}
+
+.ad-bar {
+    content: "";
+    display: table;
+    clear: both;
+    width: 100%;
+    padding-top: 10px;
+}
+
+.ad-info {
+    width: 50%;
+    float: left;
 }
