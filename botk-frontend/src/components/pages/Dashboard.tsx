@@ -36,7 +36,7 @@ function Dashboard() {
         // @ts-ignore
         accountData = <div>{Object.keys(accountGroups).map(type =>
             <div><h3>{type}</h3>
-                {accountGroups[type].map((account: any) => <AccountDetails account={account} className='secondary-color-bg' />)}
+                {accountGroups[type].map((account: any) => <Link to={`/account/${account.id}`} ><AccountDetails account={account} className='secondary-color-bg' /></Link>)}
             </div>)}
             </div>;
     }

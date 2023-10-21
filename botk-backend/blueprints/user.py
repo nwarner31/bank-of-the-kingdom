@@ -27,10 +27,10 @@ class Login(MethodView):
         password_bytes = (login_info['password'] + properties.pepper).encode('utf-8')
         salt = bcrypt.gensalt()
         hash_password = bcrypt.hashpw(password_bytes, salt)
-        print(login_info['username'])
+
         try:
             customer = CustomerModel.query.filter(CustomerModel.username == login_info['username']).first()
-            print("Test")
+            print("test")
             if customer and bcrypt.checkpw(password_bytes, customer.password.encode('utf-8')):
 
                 access_token = create_access_token(customer.id)
@@ -62,12 +62,9 @@ class Register(MethodView):
     @blp.arguments(CustomerSchema)
     @blp.response(200, CustomerLoginSchema)
     def post(self, customer_data):
-        print(customer_data)
         password_bytes = (customer_data['password'] + properties.pepper).encode('utf-8')
         salt = bcrypt.gensalt()
         hash_password = bcrypt.hashpw(password_bytes, salt)
-        print(f'hash 1: {hash_password}')
-        print("Register")
         customer_data['password'] = hash_password
         customer = CustomerModel(**customer_data)
         try:
@@ -78,7 +75,6 @@ class Register(MethodView):
         except SQLAlchemyError:
             abort(500, {"message": "An error occurred"})
 
-        print(customer)
         access_token = create_access_token(customer.id)
         cs = CustomerLoginSchema()
         cs.customer = customer

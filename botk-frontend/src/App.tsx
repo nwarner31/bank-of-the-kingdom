@@ -6,6 +6,7 @@ import Home from "./components/pages/Home";
 import Register from "./components/pages/Register";
 import Login from "./components/pages/Login";
 import CreateAccount from "./components/pages/CreateAccount";
+import Account from './components/pages/Account';
 import { useSelector, useDispatch } from "react-redux";
 import { Actions } from './store/my-data-store';
 import themes from './themes.json';
@@ -21,13 +22,7 @@ function App() {
 
     const [themeState, updateThemes] = useState([]);
     const dispatch = useDispatch();
-    const appRef = document.getElementById('app');
-    if (appRef) {
-        appRef.style.setProperty('--maincolor', theme.mainColor);
-        appRef.style.setProperty('--maintextcolor', theme.mainTextColor);
-        appRef.style.setProperty('--secondarycolor', theme.secondaryColor);
-        appRef.style.setProperty('--secondarytextcolor', theme.secondaryTextColor);
-    }
+
     //let themeArray: string[] = [];
     function changeTheme(themeName: string) {
         // @ts-ignore
@@ -35,18 +30,26 @@ function App() {
         localStorage.setItem('theme', themeName);
         dispatch({type: Actions.ChangeTheme, payload: newTheme});
     }
+    if(themeState.length === 0) {
+        let themeArray: string[] = [];
+            for (let themesKey in themes) {
+                themeArray.push(themesKey);
+                console.log(themesKey);
+            }
+            // @ts-ignore
+            updateThemes(themeArray);
+            const ltheme = localStorage.getItem('theme') ?? 'Toad';
+            changeTheme(ltheme);
+    }
 
-    useEffect(() => {
-            let themeArray: string[] = [];
-        for (let themesKey in themes) {
-            themeArray.push(themesKey);
-            console.log(themesKey);
-        }
-        // @ts-ignore
-        updateThemes(themeArray);
-        const ltheme = localStorage.getItem('theme') ?? 'Toad';
-        changeTheme(ltheme);
-    }, [])
+    const appRef = document.getElementById('app');
+    if (appRef) {
+        appRef.style.setProperty('--maincolor', theme.mainColor);
+        appRef.style.setProperty('--maintextcolor', theme.mainTextColor);
+        appRef.style.setProperty('--secondarycolor', theme.secondaryColor);
+        appRef.style.setProperty('--secondarytextcolor', theme.secondaryTextColor);
+    }
+
   return (
     <div className="App" id='app'>
         <Header />
@@ -58,6 +61,7 @@ function App() {
             <Route path='/login' element={<Login />} />
             <Route path='/dashboard' element={<Dashboard />} />
             <Route path='/create-account' element={<CreateAccount />} />
+            <Route path='/account/:accountId' element={<Account />} />
         </Routes>
     </div>
   );
