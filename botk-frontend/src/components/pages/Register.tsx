@@ -60,10 +60,7 @@ function Register() {
 
     function cancel() {
         console.log('Cancel clicked');
-        fetch(properties.url+'/register').then(response => {
-            //console.log(res);
-            return response.json();
-        }).then(data => {console.log(data)});
+
     }
 
     function registerUser() {
@@ -90,7 +87,7 @@ function Register() {
                 return response.json()
             }).then(data => {
                 if(data.customer) {
-                    dispatch(({type: Actions.Login, payload: {customer: data.customer, token: data.token}}));
+                    dispatch(({type: Actions.Login, payload: {customer: data.customer, accounts: [], token: data.token}}));
 
                     navigate("/dashboard");
                 } else {

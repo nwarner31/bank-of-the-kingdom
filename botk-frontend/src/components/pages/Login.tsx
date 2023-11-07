@@ -24,7 +24,7 @@ function Login() {
     }
 
     function cancel() {
-
+        navigate("/");
     }
 
     function loginUser() {
@@ -42,7 +42,10 @@ function Login() {
                 //console.log(data);
 
                 if(data.customer) {
-                    dispatch(({type: Actions.Login, payload: {customer: data.customer, token: data.token}}));
+                    const customer = data.customer;
+                    const accounts = customer.accounts;
+                    delete customer.accounts;
+                    dispatch(({type: Actions.Login, payload: {customer: data.customer, accounts, token: data.token}}));
 
                     navigate("/dashboard");
                 } else {

@@ -39,7 +39,6 @@ function Account() {
                 }).then(response => {
                     return response.json();
                 }).then(data => {
-                    console.log(data);
                     setTransactions(data.transactions);
                     const a = data;
                     delete a.transactions;
@@ -50,7 +49,6 @@ function Account() {
     }, []);
 
     let transactionData: JSX.Element = <></>;
-    console.log(typeof transactions);
     // @ts-ignore
     if(transactions === undefined || transactions === null || transactions.length === 0) {
         transactionData = (

@@ -3,6 +3,8 @@ import { configureStore } from '@reduxjs/toolkit';
 export enum Actions {
     Login,
     Logout,
+    AddAccount,
+    UpdateAccounts,
     ChangeTheme
 }
 
@@ -10,13 +12,28 @@ const myReducer = (state = {loggedIn: false, theme: {"mainColor": "rgb(232, 15, 
         "mainTextColor": "white",
         "secondaryColor": "#FCD1A7",
         "secondaryTextColor": "black",
-        "headImg": "toad-head.jpg"}, customer: null, token: null }, action: { type: Actions, payload: any }) => {
+        "headImg": "toad-head.jpg"}, customer: null, accounts: [],token: null }, action: { type: Actions, payload: any }) => {
     switch(action.type) {
         case Actions.Login: {
-            return { ...state, loggedIn: true, customer: action.payload.customer, token: action.payload.token }
+            return { ...state, loggedIn: true, customer: action.payload.customer, accounts: action.payload.accounts, token: action.payload.token }
         }
         case Actions.Logout: {
             return { ...state, loggedIn: false, user: null, token: null };
+        }
+        case Actions.AddAccount: {
+            return { ...state, accounts: [...state.accounts, action.payload.account]};
+        }
+        case Actions.UpdateAccounts: {
+            const accounts = [...state.accounts];
+            for (let index = 0; index < action.payload.accounts.length; index++) {
+                const account = action.payload.accounts[index];
+                console.log(account);
+                const i = accounts.findIndex((a: { id: number; }) => a.id === account.id);
+                // @ts-ignore
+                accounts[i] = account;
+            }
+            console.log(accounts);
+            return { ...state, accounts: accounts};
         }
         case Actions.ChangeTheme: {
             return { ...state, theme: action.payload }

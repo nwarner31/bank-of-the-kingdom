@@ -5,8 +5,8 @@ from flask_jwt_extended import get_jwt, jwt_required
 from datetime import date
 
 from models.accounts import AccountModel
-from schemas.account_schemas import CreateAccountSchema, AccountTransactionsSchema
-from schemas.transaction_schemas import SubmitTransactionSchema, TransactionsSchema
+from schemas.account_schemas import CreateAccountSchema, AccountTransactionsSchema, SimpleAccountSchema
+from schemas.transaction_schemas import SubmitTransactionSchema, TransactionsSchema, TransferSchema
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy import update
 from models.transactions import TransactionModel
@@ -17,13 +17,23 @@ blp = Blueprint('accounts', "accounts", description="account paths")
 
 @blp.route("/account")
 class Accounts(MethodView):
+    # Commented out until determine if needed
+    # @blp.response(200, SimpleAccountSchema(many=True))
+    # @jwt_required()
+    # def get(self):
+    #     try:
+    #         customer_id = get_jwt()['sub']
+    #         accounts = AccountModel.query.filter(AccountModel.customer_id == customer_id).all()
+    #         return accounts
+    #
+    #     except SQLAlchemyError:
+    #         abort(500, {"message": "There was an error"})
 
     @blp.arguments(CreateAccountSchema)
+    @blp.response(200, SimpleAccountSchema)
     @jwt_required()
     def post(self, account_data):
         customer_id = get_jwt()['sub']
-        print(customer_id)
-        print(account_data)
         account = AccountModel()
         account.account_type = account_data['account_type']
         account.account_name = account_data['account_name']
@@ -32,9 +42,9 @@ class Accounts(MethodView):
         try:
             db.session.add(account)
             db.session.commit()
+            return account
         except SQLAlchemyError:
             abort(500, {"message": "An error occurred"})
-        return {"message": "Got it"}
 
 
 @blp.route("/account/<int:account_id>")
@@ -46,7 +56,6 @@ class Account(MethodView):
             account = AccountModel.query.filter(AccountModel.id == account_id).first()
             customer_id = get_jwt()['sub']
             if account.customer_id == customer_id:
-                print(account.account_type)
                 return account
             else:
                 return {"message": "Account does not exist or you are unauthorized to view it"}
@@ -63,7 +72,6 @@ class AccountTransaction(MethodView):
             account = AccountModel.query.filter(AccountModel.id == account_id).first()
             customer_id = get_jwt()['sub']
             if account.customer_id == customer_id:
-                # transactions = account.transactions.all()
                 transactions = TransactionModel.query.filter(TransactionModel.account_id == account_id).all()
                 print(transactions)
                 return transactions
@@ -109,3 +117,50 @@ class AccountTransaction(MethodView):
                 return {"message": "Account does not exist or you are unauthorized to view it"}
         except SQLAlchemyError:
             abort(500, {"message": "There was a server error"})
+
+
+@blp.route("/transfer")
+class Transfer(MethodView):
+    @blp.arguments(TransferSchema)
+    @jwt_required()
+    def post(self, transfer_info):
+        try:
+            customer_id = get_jwt()["sub"]
+            to_account = AccountModel.query.filter(AccountModel.id == transfer_info["to_id"]).first()
+            from_account = AccountModel.query.filter(AccountModel.id == transfer_info["from_id"]).first()
+            # Check to make sure the logged in user owns both the accounts involved in the transfer
+            if to_account.customer_id == customer_id and from_account.customer_id == customer_id:
+                amount = transfer_info["amount"]
+                # Check to make sure the from account has enough for the transfer
+                if from_account.balance >= amount:
+                    # From
+                    from_transaction = TransactionModel()
+                    from_transaction.account_id = from_account.id
+                    from_transaction.transaction_type = "withdraw"
+                    from_transaction.amount = amount
+                    from_transaction.date = date.today()
+                    from_after_balance = from_account.balance - amount
+                    from_transaction.balance_after = from_after_balance
+                    from_account.balance = from_after_balance
+                    # To
+                    to_transaction = TransactionModel()
+                    to_transaction.account_id = to_account.id
+                    to_transaction.transaction_type = "deposit"
+                    to_transaction.amount = amount
+                    to_transaction.date = date.today()
+                    to_after_balance = to_account.balance + amount
+                    to_transaction.balance_after = to_after_balance
+                    to_account.balance = to_after_balance
+                    # Commit all changes
+                    db.session.add(from_transaction)
+                    db.session.add(from_account)
+                    db.session.add(to_transaction)
+                    db.session.add(to_account)
+                    db.session.commit()
+                    return {"status_code": 200, "message": "Transfer complete"}
+                else:
+                    return {"status_code": 400, "message": "Insufficient funds"}
+            else:
+                return {"status_code": 400, "message": "Account does not exist or you do not have permission"}
+        except SQLAlchemyError:
+            return {"status_code": 500, "message": "There was a server error"}

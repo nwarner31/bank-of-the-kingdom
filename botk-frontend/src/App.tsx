@@ -7,6 +7,7 @@ import Register from "./components/pages/Register";
 import Login from "./components/pages/Login";
 import CreateAccount from "./components/pages/CreateAccount";
 import Account from './components/pages/Account';
+import Transfer from "./components/pages/Transfer";
 import { useSelector, useDispatch } from "react-redux";
 import { Actions } from './store/my-data-store';
 import themes from './themes.json';
@@ -62,6 +63,7 @@ function App() {
             <Route path='/dashboard' element={<Dashboard />} />
             <Route path='/create-account' element={<CreateAccount />} />
             <Route path='/account/:accountId' element={<Account />} />
+            <Route path='/transfer' element={<Transfer />} />
         </Routes>
     </div>
   );

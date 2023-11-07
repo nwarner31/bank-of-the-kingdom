@@ -1,12 +1,12 @@
-import {Navigate} from "react-router-dom";
-import {useSelector} from "react-redux";
-import HoverButton from "../controls/HoverButton";
+import {Navigate, useNavigate} from "react-router-dom";
+import {useSelector, useDispatch} from "react-redux";
+import {SetStateAction, useState} from "react";
 
 import '../../Theming.css';
 import './CreateAccount.css';
-import {SetStateAction, useState} from "react";
+import {Actions} from '../../store/my-data-store';
 import properties from '../../utility/data/application.json';
-
+import HoverButton from "../controls/HoverButton";
 
 function CreateAccount() {
 
@@ -19,6 +19,8 @@ function CreateAccount() {
     // @ts-ignore
     const token = useSelector(state => state.token);
 
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
     if (!loggedIn) {
         return (<Navigate to='/' replace={true}/>);
     }
@@ -43,8 +45,12 @@ function CreateAccount() {
 
             fetch(properties.url + '/account', {method: 'POST',
                 body: body, headers: {'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`}}).then(data => {
-                    console.log(data);
+                'Authorization': `Bearer ${token}`}}).then(response => {
+                    return response.json();
+            }).then(data => {
+                console.log(data);
+                dispatch({type: Actions.AddAccount, payload: {account: data}});
+                navigate('/dashboard');
             });
         }
     }

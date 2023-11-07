@@ -14,7 +14,7 @@ from flask_cors import cross_origin
 
 from models.customers import CustomerModel
 from models.blocklist import BLOCKLIST
-from schemas.customer_schemas import CustomerSchema, LoginSchema, CustomerLoginSchema, LogoutSchema
+from schemas.customer_schemas import CustomerSchema, LoginSchema, CustomerLoginSchema
 
 blp = Blueprint('customers', "customers", description="customer paths")
 
@@ -30,7 +30,6 @@ class Login(MethodView):
 
         try:
             customer = CustomerModel.query.filter(CustomerModel.username == login_info['username']).first()
-            print("test")
             if customer and bcrypt.checkpw(password_bytes, customer.password.encode('utf-8')):
 
                 access_token = create_access_token(customer.id)

@@ -9,19 +9,20 @@ function Dashboard() {
     // @ts-ignore
     const customer = useSelector(state => state.customer);
     // @ts-ignore
+    const accounts = useSelector(state => state.accounts);
+    // @ts-ignore
     const loggedIn = useSelector(state => state.loggedIn);
 
     if (!loggedIn) {
         return (<Navigate to='/' replace={true}/>);
     }
     let accountData: JSX.Element = <></>;
-    console.log(customer);
     const accountGroups: any = {};
-    if (customer && customer.accounts.length === 0) {
+    if (accounts.length === 0) {
         accountData = <h3>You do not have any accounts.</h3>;
     } else {
         // Organizes accounts based upon account type
-        customer.accounts.forEach((account: { account_type: string; }) => {
+        accounts.forEach((account: { account_type: string; }) => {
             if (account.account_type in accountGroups) {
                 // @ts-ignore
                 accountGroups[account.account_type].push(account)
@@ -29,8 +30,6 @@ function Dashboard() {
                 // @ts-ignore
                 accountGroups[account.account_type] = [account];
             }
-            console.log(accountGroups);
-
         });
         // Displays the accounts grouped by account type
         // @ts-ignore
@@ -52,7 +51,12 @@ function Dashboard() {
                     </div>
                     <div className='dashboard-section'>
                         Actions
-                        <Link to='/create-account' className='dashboard-link'><HoverButton text='Create Account' baseClass='secondary-color-bg' hoverClass='secondary-color-text' className='dashboard-button' /></Link>
+                        <Link to='/create-account' className='dashboard-link'>
+                            <HoverButton text='Create Account' baseClass='secondary-color-bg' hoverClass='secondary-color-text' className='dashboard-button' />
+                        </Link>
+                        {accounts.length > 1 && <Link to='/transfer' className='dashboard-link'>
+                            <HoverButton text='Transfer' baseClass='secondary-color-bg' hoverClass='secondary-color-text' className='dashboard-button' />
+                        </Link>}
                     </div>
                 </div>
             </div>
