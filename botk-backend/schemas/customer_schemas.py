@@ -26,6 +26,7 @@ class CustomerSchema(Schema):
 
 
 from schemas.account_schemas import SimpleAccountSchema
+from schemas.loan_schemas import LoanSchema
 
 
 class CustomerAccountSchema(Schema):
@@ -39,8 +40,9 @@ class CustomerAccountSchema(Schema):
     email = fields.Str(required=True)
     username = fields.Str(required=True)
     accounts = fields.List(fields.Nested(SimpleAccountSchema()), dump_only=True)
+    loans = fields.List(fields.Nested(LoanSchema()), dump_only=True)
 
 
 class CustomerLoginSchema(Schema):
-    customer = fields.Nested(CustomerAccountSchema)
+    customer = fields.Nested(CustomerAccountSchema())
     token = fields.Str()

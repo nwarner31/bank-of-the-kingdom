@@ -1,0 +1,12 @@
+.left-text {
+    text-align: left;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.error-label {
+    float: right;
+    font-weight: bolder;
+}

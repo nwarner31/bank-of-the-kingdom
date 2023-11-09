@@ -13,6 +13,8 @@ function Dashboard() {
     // @ts-ignore
     const loggedIn = useSelector(state => state.loggedIn);
 
+    // @ts-ignore
+    const loans = useSelector(state => state.loans);
     if (!loggedIn) {
         return (<Navigate to='/' replace={true}/>);
     }
@@ -34,8 +36,8 @@ function Dashboard() {
         // Displays the accounts grouped by account type
         // @ts-ignore
         accountData = <div>{Object.keys(accountGroups).map(type =>
-            <div><h3>{type}</h3>
-                {accountGroups[type].map((account: any) => <Link to={`/account/${account.id}`} ><AccountDetails account={account} className='secondary-color-bg' /></Link>)}
+            <div key={type}><h3>{type}</h3>
+                {accountGroups[type].map((account: any) => <Link to={`/account/${account.id}`} key={account.id}><AccountDetails account={account} className='secondary-color-bg' /></Link>)}
             </div>)}
             </div>;
     }
@@ -46,8 +48,13 @@ function Dashboard() {
                 <div>{customer.first_name}</div>
                 <div className="dashboard-main">
                     <div className='dashboard-section'>
-                        Accounts
+                        <h2>Accounts</h2>
                         {accountData}
+                        {loans.length > 0 &&
+                        <div>
+                            <h3>Loans</h3>
+                            {loans.map((loan: { id: number; loan_type: string; loan_name: string; loan_amount: number; balance: number; status: string; }) => <LoanDetails key={loan.id} loan={loan} className='secondary-color-bg' />)}
+                        </div>}
                     </div>
                     <div className='dashboard-section'>
                         Actions
@@ -57,6 +64,9 @@ function Dashboard() {
                         {accounts.length > 1 && <Link to='/transfer' className='dashboard-link'>
                             <HoverButton text='Transfer' baseClass='secondary-color-bg' hoverClass='secondary-color-text' className='dashboard-button' />
                         </Link>}
+                        <Link to='/apply-loan' className='dashboard-link'>
+                            <HoverButton text='Apply for a Loan' baseClass='secondary-color-bg' hoverClass='secondary-color-text' className='dashboard-button' />
+                        </Link>
                     </div>
                 </div>
             </div>
@@ -70,7 +80,7 @@ function Dashboard() {
         account_type: string,
         account_name: string,
         balance: number},
-     className: string | null
+     className?: string
  }
 function AccountDetails(props: adprops) {
     return (
@@ -79,6 +89,33 @@ function AccountDetails(props: adprops) {
             <div className="ad-bar">
                 <div className="ad-info">{props.account.id}</div>
                 <div className="ad-info">{props.account.balance}</div>
+            </div>
+        </div>
+    );
+}
+
+interface ldprops {
+    loan: {
+        id: number,
+        loan_type: string,
+        loan_name: string,
+        loan_amount: number,
+        balance: number,
+        status: string
+    },
+    className?: string
+}
+
+function LoanDetails (props: ldprops) {
+    return (
+        <div className={"float-container display-tile clickable " + props.className ?? ""}>
+            <div className="float-left">
+                <div className="minor-header">{props.loan.loan_name}</div>
+                <div>{props.loan.loan_type}</div>
+            </div>
+            <div className="float-right">
+                <div>{props.loan.balance}</div>
+                <div>{props.loan.status}</div>
             </div>
         </div>
     );

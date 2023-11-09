@@ -60,7 +60,6 @@ function Register() {
 
     function cancel() {
         console.log('Cancel clicked');
-
     }
 
     function registerUser() {
@@ -79,15 +78,14 @@ function Register() {
             }
         }
         if (isValid) {
-            console.log(body);
             fetch(properties.url+'/register', {method: 'POST',
                 body: body,
                 headers: {'Content-Type': 'application/json'}}).then(response => {
                 console.log(response);
-                return response.json()
+                return response.json();
             }).then(data => {
                 if(data.customer) {
-                    dispatch(({type: Actions.Login, payload: {customer: data.customer, accounts: [], token: data.token}}));
+                    dispatch(({type: Actions.Login, payload: {customer: data.customer, accounts: [], loans: [], token: data.token}}));
 
                     navigate("/dashboard");
                 } else {

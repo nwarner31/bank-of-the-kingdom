@@ -1,0 +1,33 @@
+.inputLabel {
+    text-align: left;
+    margin-bottom: 3px;
+}
+
+.inputDiv {
+    position: relative;
+}
+
+.input {
+    width: 100%;
+}
+
+.inputError {
+    float: right;
+    font-weight: bold;
+}
+
+.inputErrorIcon {
+    /* Positioned at the right side */
+    position: absolute;
+    top: 0.8rem;
+    right: 0;
+    transform: translate(0, -50%);
+    height: 1.2rem;
+
+    z-index: 10;
+}
+
+.inputErrorIcon img {
+    height: 90%;
+
+}

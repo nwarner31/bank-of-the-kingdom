@@ -44,8 +44,11 @@ function Login() {
                 if(data.customer) {
                     const customer = data.customer;
                     const accounts = customer.accounts;
+                    const loans = customer.loans;
                     delete customer.accounts;
-                    dispatch(({type: Actions.Login, payload: {customer: data.customer, accounts, token: data.token}}));
+                    delete customer.loans
+                    console.log(data.customer);
+                    dispatch(({type: Actions.Login, payload: {customer: data.customer, accounts, loans, token: data.token}}));
 
                     navigate("/dashboard");
                 } else {

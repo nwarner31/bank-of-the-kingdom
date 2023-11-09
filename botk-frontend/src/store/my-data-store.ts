@@ -5,6 +5,7 @@ export enum Actions {
     Logout,
     AddAccount,
     UpdateAccounts,
+    AddLoan,
     ChangeTheme
 }
 
@@ -12,10 +13,15 @@ const myReducer = (state = {loggedIn: false, theme: {"mainColor": "rgb(232, 15, 
         "mainTextColor": "white",
         "secondaryColor": "#FCD1A7",
         "secondaryTextColor": "black",
-        "headImg": "toad-head.jpg"}, customer: null, accounts: [],token: null }, action: { type: Actions, payload: any }) => {
+        "headImg": "toad-head.jpg"}, customer: null, accounts: [], loans: [], token: null }, action: { type: Actions, payload: any }) => {
     switch(action.type) {
         case Actions.Login: {
-            return { ...state, loggedIn: true, customer: action.payload.customer, accounts: action.payload.accounts, token: action.payload.token }
+            return { ...state,
+                loggedIn: true,
+                customer: action.payload.customer,
+                accounts: action.payload.accounts,
+                loans: action.payload.loans,
+                token: action.payload.token }
         }
         case Actions.Logout: {
             return { ...state, loggedIn: false, user: null, token: null };
@@ -35,6 +41,8 @@ const myReducer = (state = {loggedIn: false, theme: {"mainColor": "rgb(232, 15, 
             console.log(accounts);
             return { ...state, accounts: accounts};
         }
+        case Actions.AddLoan:
+            return { ...state, loans: [...state.loans, action.payload.loan]};
         case Actions.ChangeTheme: {
             return { ...state, theme: action.payload }
         }

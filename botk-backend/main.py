@@ -7,6 +7,7 @@ import properties
 from db import db
 from blueprints.user import blp as register_blueprint
 from blueprints.account import blp as account_blueprint
+from blueprints.loan import blp as loan_blueprint
 from models.blocklist import BLOCKLIST
 
 app = Flask(__name__)
@@ -33,6 +34,7 @@ api = Api(app)
 
 api.register_blueprint(register_blueprint)
 api.register_blueprint(account_blueprint)
+api.register_blueprint(loan_blueprint)
 
 
 @jwt.expired_token_loader

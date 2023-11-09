@@ -8,6 +8,7 @@ import Login from "./components/pages/Login";
 import CreateAccount from "./components/pages/CreateAccount";
 import Account from './components/pages/Account';
 import Transfer from "./components/pages/Transfer";
+import ApplyLoan from "./components/pages/ApplyLoan";
 import { useSelector, useDispatch } from "react-redux";
 import { Actions } from './store/my-data-store';
 import themes from './themes.json';
@@ -54,7 +55,7 @@ function App() {
   return (
     <div className="App" id='app'>
         <Header />
-        {themeState.map((theme) => (<div onClick={() => changeTheme(theme)} className='secondary-color-bg'> {theme} Theme</div>))}
+        {themeState.map((theme) => (<div key={theme} onClick={() => changeTheme(theme)} className='secondary-color-bg'> {theme} Theme</div>))}
 
         <Routes>
             <Route path='/' element={<Home />} />
@@ -64,6 +65,7 @@ function App() {
             <Route path='/create-account' element={<CreateAccount />} />
             <Route path='/account/:accountId' element={<Account />} />
             <Route path='/transfer' element={<Transfer />} />
+            <Route path="/apply-loan" element={<ApplyLoan />} />
         </Routes>
     </div>
   );

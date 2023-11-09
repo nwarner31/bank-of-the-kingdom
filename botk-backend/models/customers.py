@@ -15,5 +15,4 @@ class CustomerModel(db.Model):
     password = db.Column(db.String(80), nullable=False)
 
     accounts = db.relationship("AccountModel", back_populates="customer", lazy="dynamic")
-
-
+    loans = db.relationship("LoanModel", back_populates="customer", lazy="dynamic")
