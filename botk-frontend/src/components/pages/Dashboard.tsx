@@ -53,7 +53,7 @@ function Dashboard() {
                         {loans.length > 0 &&
                         <div>
                             <h3>Loans</h3>
-                            {loans.map((loan: { id: number; loan_type: string; loan_name: string; loan_amount: number; balance: number; status: string; }) => <LoanDetails key={loan.id} loan={loan} className='secondary-color-bg' />)}
+                            {loans.map((loan: { id: number; loan_type: string; loan_name: string; loan_amount: number; balance: number; status: string; }) => <Link to={`/loan/${loan.id}`} key={loan.id}><LoanDetails  loan={loan} className='secondary-color-bg' /></Link>)}
                         </div>}
                     </div>
                     <div className='dashboard-section'>

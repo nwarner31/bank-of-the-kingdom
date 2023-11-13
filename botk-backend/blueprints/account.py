@@ -87,7 +87,7 @@ class AccountTransaction(MethodView):
         try:
             account = AccountModel.query.filter(AccountModel.id == account_id).first()
             customer_id = get_jwt()['sub']
-            if account.customer_id == customer_id:
+            if account and account.customer_id == customer_id:
                 transaction = TransactionModel()
                 transaction.account_id = account_id
                 transaction.amount = transaction_info['amount']

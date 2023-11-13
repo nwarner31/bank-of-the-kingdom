@@ -1,4 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
+import {Customer, Account, Loan, Theme} from '../models'
 
 export enum Actions {
     Login,
@@ -6,10 +7,20 @@ export enum Actions {
     AddAccount,
     UpdateAccounts,
     AddLoan,
+    UpdateLoan,
     ChangeTheme
 }
 
-const myReducer = (state = {loggedIn: false, theme: {"mainColor": "rgb(232, 15, 39)",
+export interface ReduxState {
+    loggedIn: boolean,
+    theme: Theme,
+    customer: Customer | null,
+    token: string | null,
+    accounts: Account[],
+    loans: Loan[]
+}
+
+const myReducer = (state: ReduxState = {loggedIn: false, theme: {"mainColor": "rgb(232, 15, 39)",
         "mainTextColor": "white",
         "secondaryColor": "#FCD1A7",
         "secondaryTextColor": "black",
@@ -34,15 +45,19 @@ const myReducer = (state = {loggedIn: false, theme: {"mainColor": "rgb(232, 15, 
             for (let index = 0; index < action.payload.accounts.length; index++) {
                 const account = action.payload.accounts[index];
                 console.log(account);
-                const i = accounts.findIndex((a: { id: number; }) => a.id === account.id);
-                // @ts-ignore
+                const i = accounts.findIndex(a => a.id === account.id);
                 accounts[i] = account;
             }
             console.log(accounts);
-            return { ...state, accounts: accounts};
+            return { ...state, accounts};
         }
         case Actions.AddLoan:
             return { ...state, loans: [...state.loans, action.payload.loan]};
+        case Actions.UpdateLoan:
+            const loans = [...state.loans];
+            const index = loans.findIndex(loan => loan.id === action.payload.id);
+            loans[index] = action.payload;
+            return {...state, loans}
         case Actions.ChangeTheme: {
             return { ...state, theme: action.payload }
         }

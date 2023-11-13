@@ -1,37 +1,32 @@
-import {ChangeEvent} from "react";
+import {InputHTMLAttributes, FC} from "react";
 
 import styles from './TextInput.module.css';
+import xIcon from '../../resources/x.png';
 
-interface inputProps {
+interface inputProps extends InputHTMLAttributes<HTMLInputElement> {
     label: string,
-    name: string,
-    value: string,
-    isPassword: boolean,
-    hasError: boolean,
-    valueChange: (field: string, newValue: string) => void,
-    clearError: (field: string) => void,
-    className?: string | null,
+    hasError?: boolean,
+    clearError?: (field: string) => void,
+    className?: string,
 }
 
-function TextInput(props: inputProps) {
-    function valueChanged(event: ChangeEvent<HTMLInputElement>) {
-        const newValue = event.target.value ?? '';
-        props.valueChange(props.name, newValue);
-    }
+const TextInput: FC<inputProps> = ({label, className, hasError, clearError, ...rest})=> {
 
     function hasFocus() {
-        props.clearError(props.name);
+        if (clearError && rest.name) {
+            clearError(rest.name);
+        }
     }
 
     return  (
-        <div className={props.className ?? ''}>
+        <div className={className ?? ''}>
             <div className={styles.inputLabel}>
-                <label>{props.label}{props.hasError && <span className={styles.inputError} >Error:</span>}</label>
+                <label>{label}{hasError && <span className={styles.inputError} >Error:</span>}</label>
             </div>
             <div className={styles.inputDiv} >
-                <input type={props.isPassword ? 'password' : 'text'} name={props.name} className={styles.input} onChange={valueChanged} value={props.value} onFocus={hasFocus} />
+                <input className={styles.input} onFocus={hasFocus} {...rest} />
                 <span className={styles.inputErrorIcon} >
-                    {props.hasError && <img src={`./resources/images/x.png`} />}
+                    {hasError && <img src={xIcon} alt="Error marker" />}
                 </span>
             </div>
         </div>

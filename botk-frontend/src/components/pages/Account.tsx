@@ -1,4 +1,4 @@
-import {useParams} from "react-router-dom";
+import {Navigate, useParams} from "react-router-dom";
 import {useSelector} from "react-redux";
 
 import HoverButton from "../controls/HoverButton";
@@ -47,6 +47,12 @@ function Account() {
                 });
 
     }, []);
+
+    // @ts-ignore
+    const loggedIn = useSelector(state => state.loggedIn);
+    if (!loggedIn) {
+        return (<Navigate to='/' replace={true}/>);
+    }
 
     let transactionData: JSX.Element = <></>;
     // @ts-ignore

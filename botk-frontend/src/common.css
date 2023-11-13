@@ -28,6 +28,10 @@
     float: right;
 }
 
+.hidden {
+    display: none;
+}
+
 .input-row-collapsable {
     margin-bottom: 10px;
 }
@@ -41,15 +45,52 @@
 
 }
 
+.main-column {
+    width: 50%;
+}
+
 .minor-header {
     text-decoration: underline;
     font-weight: 800;
+}
+
+.border-bottom-secondary {
+    border-bottom: 2px solid var(--secondarycolor);
+}
+
+.full-button {
+    border-radius: 5px;
+    cursor: pointer;
+    display: block;
+    width: 100%;
+    padding-bottom: 10px;
+    padding-top: 10px;
 }
 
 .smaller-button {
     padding: 10px;
     border-radius: 4px;
     cursor: pointer;
+}
+
+.wp-sub-column {
+    float: left;
+    width: 45%;
+    margin: 10px 2%;
+}
+
+@media screen and (max-width: 800px) and (min-width: 550px), (max-width: 400px) {
+    .wp-sub-column {
+        width: 95%;
+    }
+}
+
+@media screen and (max-width: 550px) {
+    .main-column {
+        width: 95%;
+        margin-left: 2%;
+        margin-right: 2%;
+    }
 }
 
 @media screen and (max-width: 600px) {

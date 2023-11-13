@@ -1,6 +1,6 @@
 import {useSelector, useDispatch} from "react-redux";
 import {Navigate, useNavigate} from "react-router-dom";
-import {useRef, useState} from "react";
+import {ChangeEvent, useState} from "react";
 
 import TextInput from "../controls/TextInput";
 import HoverButton from "../controls/HoverButton";
@@ -31,7 +31,9 @@ function ApplyLoan() {
 
 
 
-    function updateLoanInfo(fieldName: string, newValue: string) {
+    function updateLoanInfo(event: (ChangeEvent<HTMLInputElement | HTMLSelectElement>) ){
+        const fieldName = event.target.name;
+        const newValue = event.target.value;
         setLoanInfo(prevState => {
             return {...prevState, [fieldName]: newValue}
         })
@@ -97,7 +99,7 @@ function ApplyLoan() {
                         <div className="input-column-collapsable">
                             <div className="left-text"><label>Loan Type:</label>{errorInfo.loan_type && <span className="error-label">Error:</span>}</div>
                             <div>
-                                <select value={loanInfo.loan_type} onChange={(e) => updateLoanInfo("loan_type", e.target.value)} onFocus={() => clearError("loan_type")} className="full-width">
+                                <select value={loanInfo.loan_type} onChange={updateLoanInfo} onFocus={() => clearError("loan_type")} className="full-width">
                                     <option value="">Select a loan type</option>
                                     <option value="auto">Auto</option>
                                     <option value="home">Home</option>
@@ -105,14 +107,15 @@ function ApplyLoan() {
                                 </select>
                             </div>
                         </div>
-                        <TextInput label="Loan Name:" name="loan_name" value={loanInfo.loan_name} isPassword={false} hasError={errorInfo.loan_name} valueChange={updateLoanInfo} clearError={clearError} className="input-column-collapsable" />
+
+                        <TextInput label="Loan Name:" name="loan_name" value={loanInfo.loan_name} type="text" hasError={errorInfo.loan_name} onChange={updateLoanInfo} clearError={clearError} className="input-column-collapsable" />
                     </div>
                     <div className="input-row-collapsable  float-container" >
-                        <TextInput label="Loan Amount:" name="loan_amount" value={loanInfo.loan_amount} isPassword={false} hasError={errorInfo.loan_amount} valueChange={updateLoanInfo} clearError={clearError} className="input-column-collapsable" />
+                        <TextInput label="Loan Amount:" name="loan_amount" value={loanInfo.loan_amount} type="text" hasError={errorInfo.loan_amount} onChange={updateLoanInfo} clearError={clearError} className="input-column-collapsable" />
                     </div>
                     <div className="input-row-collapsable float-container">
-                        <TextInput label="Annual Income:" name="customer_income" value={loanInfo.customer_income} isPassword={false} hasError={errorInfo.customer_income} valueChange={updateLoanInfo} clearError={clearError} className="input-column-collapsable" />
-                        <TextInput label="Credit Score:" name="customer_credit_score" value={loanInfo.customer_credit_score} isPassword={false} hasError={errorInfo.customer_credit_score} valueChange={updateLoanInfo} clearError={clearError} className="input-column-collapsable" />
+                        <TextInput label="Annual Income:" name="customer_income" value={loanInfo.customer_income} type="text" hasError={errorInfo.customer_income} onChange={updateLoanInfo} clearError={clearError} className="input-column-collapsable" />
+                        <TextInput label="Credit Score:" name="customer_credit_score" value={loanInfo.customer_credit_score} type="text" hasError={errorInfo.customer_credit_score} onChange={updateLoanInfo} clearError={clearError} className="input-column-collapsable" />
                     </div>
                     <div>
                         <HoverButton text="Cancel" baseClass='secondary-color-bg' hoverClass='secondary-color-text' clickAction={cancel} className="smaller-button" />
