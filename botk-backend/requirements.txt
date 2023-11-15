@@ -1,0 +1,10 @@
+Flask
+Flask_Cors
+Flask_JWT_Extended
+flask_smorest
+flask_sqlalchemy
+marshmallow
+PyMySQL
+SQLAlchemy
+
+bcrypt

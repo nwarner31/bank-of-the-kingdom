@@ -45,8 +45,14 @@
 
 }
 
+.line-space {
+    margin-top: 10px;
+}
+
 .main-column {
-    width: 50%;
+    width: 46%;
+    margin-left: 2%;
+    margin-right: 2%;
 }
 
 .minor-header {
@@ -67,8 +73,14 @@
     padding-top: 10px;
 }
 
+.small-spacing {
+    margin: 10px;
+}
+
 .smaller-button {
     padding: 10px;
+    display: inline-block;
+    margin-top: 15px;
     border-radius: 4px;
     cursor: pointer;
 }
@@ -88,9 +100,12 @@
 @media screen and (max-width: 550px) {
     .main-column {
         width: 95%;
-        margin-left: 2%;
-        margin-right: 2%;
     }
+
+    .mobile-line {
+        margin-top: 10px;
+    }
+
 }
 
 @media screen and (max-width: 600px) {

@@ -5,10 +5,9 @@ from flask_jwt_extended import get_jwt, jwt_required
 from datetime import date
 
 from models.accounts import AccountModel
-from schemas.account_schemas import CreateAccountSchema, AccountTransactionsSchema, SimpleAccountSchema
+from schemas.account_schemas import AccountTransactionsSchema, SimpleAccountSchema
 from schemas.transaction_schemas import SubmitTransactionSchema, TransactionsSchema, TransferSchema
 from sqlalchemy.exc import SQLAlchemyError
-from sqlalchemy import update
 from models.transactions import TransactionModel
 from db import db
 
@@ -29,7 +28,7 @@ class Accounts(MethodView):
     #     except SQLAlchemyError:
     #         abort(500, {"message": "There was an error"})
 
-    @blp.arguments(CreateAccountSchema)
+    @blp.arguments(SimpleAccountSchema)
     @blp.response(200, SimpleAccountSchema)
     @jwt_required()
     def post(self, account_data):
@@ -65,20 +64,20 @@ class Account(MethodView):
 
 @blp.route("/account/<int:account_id>/transaction")
 class AccountTransaction(MethodView):
-    @jwt_required()
-    @blp.response(200, TransactionsSchema(many=True))
-    def get(self, account_id):
-        try:
-            account = AccountModel.query.filter(AccountModel.id == account_id).first()
-            customer_id = get_jwt()['sub']
-            if account.customer_id == customer_id:
-                transactions = TransactionModel.query.filter(TransactionModel.account_id == account_id).all()
-                print(transactions)
-                return transactions
-            else:
-                return {"message": "Account does not exist or you are unauthorized to view it"}
-        except SQLAlchemyError:
-            abort(500, {"message": "There was a server error"})
+    # @jwt_required()
+    # @blp.response(200, TransactionsSchema(many=True))
+    # def get(self, account_id):
+    #     try:
+    #         account = AccountModel.query.filter(AccountModel.id == account_id).first()
+    #         customer_id = get_jwt()['sub']
+    #         if account.customer_id == customer_id:
+    #             transactions = TransactionModel.query.filter(TransactionModel.account_id == account_id).all()
+    #             print(transactions)
+    #             return transactions
+    #         else:
+    #             return {"message": "Account does not exist or you are unauthorized to view it"}
+    #     except SQLAlchemyError:
+    #         abort(500, {"message": "There was a server error"})
 
     @blp.arguments(SubmitTransactionSchema)
     @blp.response(200, TransactionsSchema)

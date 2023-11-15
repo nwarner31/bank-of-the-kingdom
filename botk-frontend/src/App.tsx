@@ -9,6 +9,7 @@ import CreateAccount from "./components/pages/CreateAccount";
 import Account from './components/pages/Account';
 import Transfer from "./components/pages/Transfer";
 import ApplyLoan from "./components/pages/ApplyLoan";
+import UpdateCustomer from "./components/pages/UpdateCustomer";
 import Loan from './components/pages/Loan';
 import { useSelector, useDispatch } from "react-redux";
 import { Actions } from './store/my-data-store';
@@ -66,6 +67,7 @@ function App() {
             <Route path='/transfer' element={<Transfer />} />
             <Route path="/apply-loan" element={<ApplyLoan />} />
             <Route path="/loan/:loanId" element={<Loan />} />
+            <Route path="/update-customer" element={<UpdateCustomer />} />
         </Routes>
     </div>
   );

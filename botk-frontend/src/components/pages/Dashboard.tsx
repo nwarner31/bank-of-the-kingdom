@@ -67,6 +67,9 @@ function Dashboard() {
                         <Link to='/apply-loan' className='dashboard-link'>
                             <HoverButton text='Apply for a Loan' baseClass='secondary-color-bg' hoverClass='secondary-color-text' className='dashboard-button' />
                         </Link>
+                        <Link to='/update-customer' className='dashboard-link'>
+                            <HoverButton text='Update Customer Information' baseClass='secondary-color-bg' hoverClass='secondary-color-text' className='dashboard-button' />
+                        </Link>
                     </div>
                 </div>
             </div>

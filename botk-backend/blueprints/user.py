@@ -14,7 +14,7 @@ from flask_cors import cross_origin
 
 from models.customers import CustomerModel
 from models.blocklist import BLOCKLIST
-from schemas.customer_schemas import CustomerSchema, LoginSchema, CustomerLoginSchema
+from schemas.customer_schemas import CustomerSchema, LoginSchema, CustomerLoginSchema, UpdateCustomerSchema
 
 blp = Blueprint('customers', "customers", description="customer paths")
 
@@ -25,8 +25,6 @@ class Login(MethodView):
     @blp.response(200, CustomerLoginSchema)
     def post(self, login_info):
         password_bytes = (login_info['password'] + properties.pepper).encode('utf-8')
-        salt = bcrypt.gensalt()
-        hash_password = bcrypt.hashpw(password_bytes, salt)
 
         try:
             customer = CustomerModel.query.filter(CustomerModel.username == login_info['username']).first()
@@ -79,3 +77,31 @@ class Register(MethodView):
         cs.customer = customer
         cs.token = access_token
         return cs
+
+
+@blp.route("/customer/<int:customer_id>")
+class Customer(MethodView):
+    @blp.response(200, CustomerSchema)
+    @blp.arguments(UpdateCustomerSchema)
+    @jwt_required()
+    def put(self, customer_data, customer_id):
+        try:
+            customer_jwt_id = get_jwt()["sub"]
+            if customer_jwt_id == customer_id:
+                print(customer_data)
+                customer = CustomerModel.query.filter(CustomerModel.id == customer_jwt_id).first()
+                customer.first_name = customer_data["first_name"]
+                customer.last_name = customer_data["last_name"]
+                customer.address1 = customer_data["address1"]
+                customer.address2 = customer_data["address2"]
+                customer.city = customer_data["city"]
+                customer.kingdom = customer_data["kingdom"]
+                customer.email = customer_data["email"]
+                db.session.add(customer)
+                db.session.commit()
+                print(customer)
+                return customer
+            else:
+                pass
+        except SQLAlchemyError:
+            pass

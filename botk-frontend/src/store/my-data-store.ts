@@ -4,6 +4,7 @@ import {Customer, Account, Loan, Theme} from '../models'
 export enum Actions {
     Login,
     Logout,
+    UpdateUser,
     AddAccount,
     UpdateAccounts,
     AddLoan,
@@ -35,7 +36,10 @@ const myReducer = (state: ReduxState = {loggedIn: false, theme: {"mainColor": "r
                 token: action.payload.token }
         }
         case Actions.Logout: {
-            return { ...state, loggedIn: false, user: null, token: null };
+            return { ...state, loggedIn: false, customer: null, token: null };
+        }
+        case Actions.UpdateUser: {
+            return { ...state, customer: action.payload };
         }
         case Actions.AddAccount: {
             return { ...state, accounts: [...state.accounts, action.payload.account]};
