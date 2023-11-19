@@ -2,9 +2,10 @@ import {Navigate, useParams} from "react-router-dom";
 import {useSelector} from "react-redux";
 
 import HoverButton from "../controls/HoverButton";
+import TextInput from "../controls/TextInput";
 
 import '../../Theming.css';
-import './Account.css';
+import '../../common.css';
 import properties from '../../utility/data/application.json'
 import {SetStateAction, useEffect, useRef, useState} from "react";
 
@@ -115,33 +116,29 @@ function Account() {
 
     return (
         <div className='main-color-bg '>
-            <div className='account-page'>
-            Account Details
-            {accountId}
-            <div className='account-section-container'>
+            <div className='wide-page'>
+            <h1 className="headline">Account Information</h1>
+            <div className='float-container'>
 
-                <div className='account-page-section'>
-                    <HoverButton text="Deposit / Withdraw" baseClass='secondary-color-bg' hoverClass='secondary-color-text' className='account-action-button' clickAction={dwClicked} />
-                    <div className={dwHidden ? 'is-hidden': ''}>
-                        <select className='account-full-width' onChange={updateDw} value={dw}>
+                <div className='main-column float-right'>
+                    <HoverButton text="Deposit / Withdraw" baseClass='secondary-color-bg' hoverClass='secondary-color-text' className='full-button' clickAction={dwClicked} />
+                    <div className={dwHidden ? 'hidden': ''}>
+                        <select className='full-width line-space' onChange={updateDw} value={dw}>
                             <option value='deposit'>Deposit</option>
                             <option value='withdraw'>Withdraw</option>
                         </select>
-                        <div className='account-section-container'>
-                            <div>Amount: </div>
-                            <div><input type='number' onChange={updateAmount} value={amount}/></div>
-                        </div>
-                        <div className='account-section-container'>
-                            <div className='account-section'>
-                                <HoverButton text='Cancel' baseClass='secondary-color-bg' hoverClass='secondary-color-text' className='account-sc-button' clickAction={cancelClicked} />
+                        <TextInput label="Amount" onChange={updateAmount} value={amount} type="number" className="line-space" />
+                        <div className='line-space'>
+                            <div className='half-button'>
+                                <HoverButton text='Cancel' baseClass='secondary-color-bg' hoverClass='secondary-color-text' className='full-button' clickAction={cancelClicked} />
                             </div>
-                            <div className='account-section'>
-                                <HoverButton text='Submit' baseClass='secondary-color-bg' hoverClass='secondary-color-text' className='account-sc-button' clickAction={submitClicked} />
+                            <div className='half-button'>
+                                <HoverButton text='Submit' baseClass='secondary-color-bg' hoverClass='secondary-color-text' className='full-button' clickAction={submitClicked} />
                             </div>
                         </div>
                     </div>
                 </div>
-                <div className='account-page-section'>
+                <div className='main-column float-right mobile-line'>
                     {transactionData}
                 </div>
             </div>
@@ -162,12 +159,12 @@ interface tdprops {
 function TransactionDetails(props: tdprops) {
     const transaction = props.transaction;
     return (
-        <div className='account-section-container td-body'>
-            <div className='account-section td-left-section'>
+        <div className='float-container small-padding-horizontal border-bottom-secondary'>
+            <div className='float-left text-left'>
                 <div>{transaction.transaction_type}</div>
                 <div>{transaction.date}</div>
             </div>
-            <div className='account-section td-right-section'>
+            <div className='float-right text-right'>
                 <div>{transaction.transaction_type === 'deposit' ? '+' : '-'}{transaction.amount}</div>
                 <div>{transaction.balance_after}</div>
             </div>

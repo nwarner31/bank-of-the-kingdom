@@ -1,8 +1,20 @@
+.narrow-page {
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 20px 10px 35px;
+}
+
 .wide-page {
     margin-left: auto;
     margin-right: auto;
     max-width: 1200px;
     padding-bottom: 25px;
+    padding-top: 30px;
+}
+
+.bold-text {
+    font-weight: bolder;
 }
 
 .clickable {
@@ -28,22 +40,18 @@
     float: right;
 }
 
+.full-width {
+    width: 100%;
+}
+
+.headline {
+    font-family: Impact;
+}
+
 .hidden {
     display: none;
 }
 
-.input-row-collapsable {
-    margin-bottom: 10px;
-}
-
-
-.input-column-collapsable {
-    float: left;
-    width: 46%;
-    padding-right: 2%;
-    padding-left: 2%;
-
-}
 
 .line-space {
     margin-top: 10px;
@@ -65,24 +73,65 @@
 }
 
 .full-button {
-    border-radius: 5px;
+    border-radius: 10px;
     cursor: pointer;
     display: block;
     width: 100%;
     padding-bottom: 10px;
     padding-top: 10px;
+    box-sizing: border-box;
+}
+
+.half-button {
+    width: 50%;
+    float: left;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    display: inline-block;
+    box-sizing: border-box;
+}
+
+.small-padding-horizontal {
+    padding-right: 10px;
+    padding-left: 10px;
 }
 
 .small-spacing {
     margin: 10px;
 }
 
+.small-vertical-spacing {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
 .smaller-button {
     padding: 10px;
     display: inline-block;
     margin-top: 15px;
-    border-radius: 4px;
+    border-radius: 10px;
     cursor: pointer;
+}
+
+.medium-button {
+    padding: 15px 30px;
+    display: inline-block;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.text-plain {
+    text-decoration: none;
+}
+
+.text-left {
+    text-align: left;
+}
+
+.text-right {
+    text-align: right;
 }
 
 .wp-sub-column {
@@ -106,19 +155,4 @@
         margin-top: 10px;
     }
 
-}
-
-@media screen and (max-width: 600px) {
-    .input-row-collapsable {
-        margin-bottom: 0;
-        max-width: 450px;
-        margin-left: auto;
-        margin-right: auto;
-    }
-    .input-column-collapsable {
-        margin-bottom: 10px;
-        width: 92%;
-        padding-left: 4%;
-        padding-right: 4%;
-    }
 }

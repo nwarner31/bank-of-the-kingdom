@@ -119,7 +119,7 @@ function Loan() {
     return (
         <div className="main-color-bg">
             <div className="wide-page float-container">
-
+                <h1 className="headline">Loan Information</h1>
                     <div className="float-right main-column">
                         <div>
                             {loan &&
@@ -141,12 +141,14 @@ function Loan() {
                                 <div>
                                     <HoverButton text="Make a Payment" className="full-button" baseClass="secondary-color-bg" hoverClass="secondary-color-text" clickAction={() => setPaymentHidden(prevState => {return !prevState})} />
                                     <div className={paymentHidden ? "hidden" : ""}>
-                                        <AccountSelect label="Payment From" accounts={accounts} value={payment_from} updateValue={updatePaymentFrom} />
-                                        <TextInput label="Amount:" name="amount" value={amount} type="text" hasError={amountError} onChange={updateAmount} clearError={() => setAmountError(false)} />
-                                        <TextInput label="Note:" name="note" value={note} type="text" onChange={updateNote}  />
-                                        <HoverButton text="Cancel" baseClass="secondary-color-bg" hoverClass="secondary-color-text" clickAction={cancelClicked} className="smaller-button" />
-                                        <HoverButton text="Submit Payment" baseClass="secondary-color-bg" hoverClass="secondary-color-text" clickAction={submitPayment} className="smaller-button" />
-                                    </div>
+                                        <AccountSelect label="Payment From" accounts={accounts} value={payment_from} updateValue={updatePaymentFrom} className="text-left line-space" />
+                                        <TextInput label="Amount:" name="amount" value={amount} type="text" hasError={amountError} onChange={updateAmount} clearError={() => setAmountError(false)} className="line-space" />
+                                        <TextInput label="Note:" name="note" value={note} type="text" onChange={updateNote} className="line-space" />
+                                        <div className="line-space">
+                                            <HoverButton text="Cancel" baseClass="secondary-color-bg" hoverClass="secondary-color-text" clickAction={cancelClicked} className="half-button" />
+                                            <HoverButton text="Submit Payment" baseClass="secondary-color-bg" hoverClass="secondary-color-text" clickAction={submitPayment} className="half-button" />
+                                        </div>
+                                        </div>
                                 </div>}
 
                         </div>

@@ -95,7 +95,7 @@ function UpdateCustomer() {
     return (
       <div className="main-color-bg">
           <div className="wide-page">
-              <h1>Update Customer Info Page</h1>
+              <h1 className="headline">Update User Info</h1>
                   <div className="float-container line-space">
                       <TextInput label="First Name" name="first_name" value={customer.first_name} onChange={updateCustomerInfo} className="main-column float-left" hasError={inputError.first_name} clearError={clearError} />
                       <TextInput label="Last Name" name="last_name" value={customer.last_name} onChange={updateCustomerInfo} className="main-column float-left mobile-line" hasError={inputError.last_name} clearError={clearError} />

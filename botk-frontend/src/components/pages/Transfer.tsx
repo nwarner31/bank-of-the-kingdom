@@ -4,9 +4,11 @@ import {SetStateAction, useEffect, useRef, useState} from "react";
 
 import properties from '../../utility/data/application.json';
 import '../../Theming.css';
-import './Transfer.css';
+import '../../common.css';
 import {Actions} from '../../store/my-data-store';
 import HoverButton from "../controls/HoverButton";
+import AccountSelect from "../controls/AccountSelect";
+import TextInput from "../controls/TextInput";
 
 function Transfer() {
     // @ts-ignore
@@ -25,8 +27,7 @@ function Transfer() {
     const [toAccounts, setToAccounts] = useState([]);
     const [amount, setAmount] = useState('');
 
-    function updateFrom(event: { target: { value: SetStateAction<string>; }; }) {
-        const from = Number(event.target.value);
+    function updateFrom(from: number) {
         setFromAccount(from);
         if (from === -1) {
             setToActive(false);
@@ -38,8 +39,8 @@ function Transfer() {
         }
     }
 
-    function updateTo(event: { target: { value: SetStateAction<string>; }; }) {
-        setToAccount(Number(event.target.value));
+    function updateTo(to: number) {
+        setToAccount(to);
     }
 
     function updateAmount(event: { target: { value: any; }; }) {
@@ -77,44 +78,13 @@ function Transfer() {
         mainBody = (
             <div>
                 <div>
-                    <div>
-                        <div>
-                            Transfer from:
-                        </div>
-                        <div>
-                            <select value={fromAccount} onChange={updateFrom}>
-                                <option value={-1} >Select an account</option>
-                                {acc.map((account: any) => <AccountOption account={account} />)}
-                            </select>
-                        </div>
-                    </div>
-                    <div>
-                        <div>
-                            Transfer to:
-                        </div>
-                        <div>
-                            <select disabled={!toActive} value={toAccount} onChange={updateTo}>
-                                <option value={-1} >Select an account</option>
-                                {toAccounts.map((account: any) => <AccountOption account={account} />)}
-                            </select>
-                        </div>
-                    </div>
-                    <div>
-                        <div>
-                            Amount:
-                        </div>
-                        <div>
-                            <input type='number' value={amount} onChange={updateAmount} onKeyPress={(event) => {
-                                if (!/[0-9]/.test(event.key)) {
-                                    event.preventDefault();
-                                }
-                            }}/>
-                        </div>
-                    </div>
+                    <AccountSelect label="Transfer from" accounts={acc} value={fromAccount} updateValue={updateFrom} className="text-left line-space" />
+                    <AccountSelect label="Transfer to" accounts={toAccounts} value={toAccount} updateValue={updateTo} disabled={!toActive} className="text-left line-space" />
+                    <TextInput label="Amount" value={amount} onChange={updateAmount} type="number" className="line-space" />
                 </div>
-                <div className='transfer-button-container'>
-                    <HoverButton text='Cancel' baseClass='secondary-color-bg' hoverClass='secondary-color-text' className='transfer-buttons tb-first' clickAction={cancel} />
-                    <HoverButton text='Transfer' baseClass='secondary-color-bg' hoverClass='secondary-color-text' className='transfer-buttons' clickAction={submitTransfer} />
+                <div className='line-space'>
+                    <HoverButton text='Cancel' baseClass='secondary-color-bg' hoverClass='secondary-color-text' className='medium-button small-spacing' clickAction={cancel} />
+                    <HoverButton text='Transfer' baseClass='secondary-color-bg' hoverClass='secondary-color-text' className='medium-button small-spacing' clickAction={submitTransfer} />
                 </div>
             </div>
         );
@@ -160,27 +130,12 @@ function Transfer() {
 
     return (
         <div className='main-color-bg'>
-            <div className='transfer-page'>
-                Transfer Page
+            <div className='narrow-page'>
+                <h1 className="headline">Transfer Page</h1>
                 {mainBody}
             </div>
 
         </div>
-    );
-}
-
-interface aoprops {
-    account: {
-        id: number,
-        account_type: string,
-        account_name: string,
-        balance: number
-    }
-}
-
-function AccountOption(props: aoprops) {
-    return (
-        <option value={props.account.id}>{props.account.id}: {props.account.account_name} - {props.account.account_type} (Balance: {props.account.balance})</option>
     );
 }
 

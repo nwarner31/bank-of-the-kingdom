@@ -8,7 +8,6 @@ import properties from '../../utility/data/application.json';
 import {Actions} from "../../store/my-data-store";
 import '../../common.css';
 import '../../Theming.css';
-import './ApplyLoan.css';
 
 
 
@@ -93,11 +92,11 @@ function ApplyLoan() {
     return (
         <div className='main-color-bg'>
             <div className="wide-page">
-            <h2>Apply for a loan</h2>
+            <h1 className="headline">Apply for a loan</h1>
             <div>
-                    <div className="input-row-collapsable float-container" >
-                        <div className="input-column-collapsable">
-                            <div className="left-text"><label>Loan Type:</label>{errorInfo.loan_type && <span className="error-label">Error:</span>}</div>
+                    <div className="float-container line-space" >
+                        <div className="main-column float-left ">
+                            <div className="text-left"><label>Loan Type:</label>{errorInfo.loan_type && <span className="float-right bold-text">Error:</span>}</div>
                             <div>
                                 <select value={loanInfo.loan_type} onChange={updateLoanInfo} onFocus={() => clearError("loan_type")} className="full-width">
                                     <option value="">Select a loan type</option>
@@ -108,18 +107,18 @@ function ApplyLoan() {
                             </div>
                         </div>
 
-                        <TextInput label="Loan Name:" name="loan_name" value={loanInfo.loan_name} type="text" hasError={errorInfo.loan_name} onChange={updateLoanInfo} clearError={clearError} className="input-column-collapsable" />
+                        <TextInput label="Loan Name:" name="loan_name" value={loanInfo.loan_name} type="text" hasError={errorInfo.loan_name} onChange={updateLoanInfo} clearError={clearError} className="main-column float-left mobile-line" />
                     </div>
-                    <div className="input-row-collapsable  float-container" >
-                        <TextInput label="Loan Amount:" name="loan_amount" value={loanInfo.loan_amount} type="text" hasError={errorInfo.loan_amount} onChange={updateLoanInfo} clearError={clearError} className="input-column-collapsable" />
+                    <div className="float-container line-space" >
+                        <TextInput label="Loan Amount:" name="loan_amount" value={loanInfo.loan_amount} type="text" hasError={errorInfo.loan_amount} onChange={updateLoanInfo} clearError={clearError} className="main-column float-left" />
                     </div>
-                    <div className="input-row-collapsable float-container">
-                        <TextInput label="Annual Income:" name="customer_income" value={loanInfo.customer_income} type="text" hasError={errorInfo.customer_income} onChange={updateLoanInfo} clearError={clearError} className="input-column-collapsable" />
-                        <TextInput label="Credit Score:" name="customer_credit_score" value={loanInfo.customer_credit_score} type="text" hasError={errorInfo.customer_credit_score} onChange={updateLoanInfo} clearError={clearError} className="input-column-collapsable" />
+                    <div className="float-container line-space">
+                        <TextInput label="Annual Income:" name="customer_income" value={loanInfo.customer_income} type="text" hasError={errorInfo.customer_income} onChange={updateLoanInfo} clearError={clearError} className="main-column float-left" />
+                        <TextInput label="Credit Score:" name="customer_credit_score" value={loanInfo.customer_credit_score} type="text" hasError={errorInfo.customer_credit_score} onChange={updateLoanInfo} clearError={clearError} className="main-column float-left mobile-line" />
                     </div>
                     <div>
-                        <HoverButton text="Cancel" baseClass='secondary-color-bg' hoverClass='secondary-color-text' clickAction={cancel} className="smaller-button" />
-                        <HoverButton text="Apply" baseClass='secondary-color-bg' hoverClass='secondary-color-text' clickAction={submitLoan} className="smaller-button" />
+                        <HoverButton text="Cancel" baseClass='secondary-color-bg' hoverClass='secondary-color-text' clickAction={cancel} className="smaller-button small-spacing" />
+                        <HoverButton text="Apply" baseClass='secondary-color-bg' hoverClass='secondary-color-text' clickAction={submitLoan} className="smaller-button small-spacing" />
                     </div>
             </div>
             </div>

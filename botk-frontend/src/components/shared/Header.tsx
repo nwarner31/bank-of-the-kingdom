@@ -1,5 +1,5 @@
 import './Header.css';
-import '../../Main.css'
+import '../../common.css'
 import properties from "../../utility/data/application.json";
 import HoverButton from "../controls/HoverButton";
 import { Actions } from '../../store/my-data-store';

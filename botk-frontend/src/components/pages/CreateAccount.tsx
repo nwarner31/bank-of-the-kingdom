@@ -3,10 +3,11 @@ import {useSelector, useDispatch} from "react-redux";
 import {SetStateAction, useState} from "react";
 
 import '../../Theming.css';
-import './CreateAccount.css';
+import '../../common.css';
 import {Actions} from '../../store/my-data-store';
 import properties from '../../utility/data/application.json';
 import HoverButton from "../controls/HoverButton";
+import TextInput from "../controls/TextInput";
 
 function CreateAccount() {
 
@@ -57,28 +58,21 @@ function CreateAccount() {
 
     return (
         <div className='main-color-bg'>
-            <div>
-                <h2>Create Account</h2>
-                <div className='ca-input-section'>
+            <div className="narrow-page">
+                <h1 className="headline">Create Account</h1>
+                <div className='line-space left-text'>
                     <div>Account Type:</div>
                     <div>
-                        <select placeholder='Select an account type' value={accountType} onChange={updateAccountType}>
+                        <select placeholder='Select an account type' value={accountType} onChange={updateAccountType} className="full-width">
                             <option value='checking'>Checking</option>
                             <option value='savings'>Savings</option>
                         </select>
                     </div>
                 </div>
-                <div className='ca-input-section'>
-                    <div>
-                        Account Name:
-                    </div>
-                    <div>
-                        <input type='text' name='account-name' value={accountName} onChange={updateAccountName} />
-                    </div>
-                </div>
-                <div className='ca-button-group'>
-                    <HoverButton text='Cancel' baseClass='secondary-color-bg' hoverClass='secondary-color-text' className='create-account-buttons cab-left' />
-                    <HoverButton text='Create' baseClass='secondary-color-bg' hoverClass='secondary-color-text' className='create-account-buttons' clickAction={createAccount} />
+                <TextInput label="Account Name" value={accountName} onChange={updateAccountName} className="line-space" />
+                <div className='small-vertical-spacing'>
+                    <HoverButton text='Cancel' baseClass='secondary-color-bg' hoverClass='secondary-color-text' className='smaller-button small-spacing' />
+                    <HoverButton text='Create' baseClass='secondary-color-bg' hoverClass='secondary-color-text' className='smaller-button small-spacing' clickAction={createAccount} />
                 </div>
             </div>
         </div>

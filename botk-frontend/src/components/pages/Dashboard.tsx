@@ -2,8 +2,8 @@ import { useSelector } from "react-redux";
 import {Link, Navigate} from "react-router-dom";
 
 import HoverButton from "../controls/HoverButton";
-import './Dashboard.css';
 import '../../Theming.css';
+import '../../common.css';
 
 function Dashboard() {
     // @ts-ignore
@@ -37,38 +37,38 @@ function Dashboard() {
         // @ts-ignore
         accountData = <div>{Object.keys(accountGroups).map(type =>
             <div key={type}><h3>{type}</h3>
-                {accountGroups[type].map((account: any) => <Link to={`/account/${account.id}`} key={account.id}><AccountDetails account={account} className='secondary-color-bg' /></Link>)}
+                {accountGroups[type].map((account: any) => <Link to={`/account/${account.id}`} key={account.id}><AccountDetails account={account} className='secondary-color-bg small-vertical-spacing' /></Link>)}
             </div>)}
             </div>;
     }
     return (
         <div className='main-color-bg'>
-            <div className='dashboard-page'>
-                <h1>Dashboard Page</h1>
+            <div className='wide-page'>
+                <h1 className="headline">Dashboard Page</h1>
                 <div>{customer.first_name}</div>
-                <div className="dashboard-main">
-                    <div className='dashboard-section'>
+                <div className="float-container">
+                    <div className='float-left main-column'>
                         <h2>Accounts</h2>
                         {accountData}
                         {loans.length > 0 &&
                         <div>
                             <h3>Loans</h3>
-                            {loans.map((loan: { id: number; loan_type: string; loan_name: string; loan_amount: number; balance: number; status: string; }) => <Link to={`/loan/${loan.id}`} key={loan.id}><LoanDetails  loan={loan} className='secondary-color-bg' /></Link>)}
+                            {loans.map((loan: { id: number; loan_type: string; loan_name: string; loan_amount: number; balance: number; status: string; }) => <Link to={`/loan/${loan.id}`} key={loan.id}><LoanDetails  loan={loan} className='secondary-color-bg small-vertical-spacing' /></Link>)}
                         </div>}
                     </div>
-                    <div className='dashboard-section'>
+                    <div className='float-left main-column'>
                         Actions
-                        <Link to='/create-account' className='dashboard-link'>
-                            <HoverButton text='Create Account' baseClass='secondary-color-bg' hoverClass='secondary-color-text' className='dashboard-button' />
+                        <Link to='/create-account' className='text-plain'>
+                            <HoverButton text='Create Account' baseClass='secondary-color-bg' hoverClass='secondary-color-text' className='full-button small-vertical-spacing' />
                         </Link>
-                        {accounts.length > 1 && <Link to='/transfer' className='dashboard-link'>
-                            <HoverButton text='Transfer' baseClass='secondary-color-bg' hoverClass='secondary-color-text' className='dashboard-button' />
+                        {accounts.length > 1 && <Link to='/transfer' className='text-plain'>
+                            <HoverButton text='Transfer' baseClass='secondary-color-bg' hoverClass='secondary-color-text' className='full-button small-vertical-spacing' />
                         </Link>}
-                        <Link to='/apply-loan' className='dashboard-link'>
-                            <HoverButton text='Apply for a Loan' baseClass='secondary-color-bg' hoverClass='secondary-color-text' className='dashboard-button' />
+                        <Link to='/apply-loan' className='text-plain'>
+                            <HoverButton text='Apply for a Loan' baseClass='secondary-color-bg' hoverClass='secondary-color-text' className='full-button small-vertical-spacing' />
                         </Link>
-                        <Link to='/update-customer' className='dashboard-link'>
-                            <HoverButton text='Update Customer Information' baseClass='secondary-color-bg' hoverClass='secondary-color-text' className='dashboard-button' />
+                        <Link to='/update-customer' className='text-plain'>
+                            <HoverButton text='Update Customer Information' baseClass='secondary-color-bg' hoverClass='secondary-color-text' className='full-button small-vertical-spacing' />
                         </Link>
                     </div>
                 </div>
@@ -87,11 +87,11 @@ function Dashboard() {
  }
 function AccountDetails(props: adprops) {
     return (
-        <div className={"account-details " + props.className ?? ''}>
-            <div className="ad-name">{props.account.account_name}</div>
-            <div className="ad-bar">
-                <div className="ad-info">{props.account.id}</div>
-                <div className="ad-info">{props.account.balance}</div>
+        <div className={"small-padding-horizontal full-button secondary-color-bg small-vertical-spacing"}>
+            <div className="minor-header text-left">{props.account.account_name}</div>
+            <div className="line-space float-container">
+                <div className="float-left">Account #: {props.account.id}</div>
+                <div className="float-right">{props.account.balance}</div>
             </div>
         </div>
     );
@@ -111,14 +111,14 @@ interface ldprops {
 
 function LoanDetails (props: ldprops) {
     return (
-        <div className={"float-container display-tile clickable " + props.className ?? ""}>
-            <div className="float-left">
+        <div className={"small-padding-horizontal full-button secondary-color-bg small-vertical-spacing float-container"}>
+            <div className="float-left text-left">
                 <div className="minor-header">{props.loan.loan_name}</div>
-                <div>{props.loan.loan_type}</div>
+                <div className="line-space">Type: {props.loan.loan_type}</div>
             </div>
             <div className="float-right">
-                <div>{props.loan.balance}</div>
-                <div>{props.loan.status}</div>
+                <div>Balance: {props.loan.balance}</div>
+                <div className="line-space">Status: {props.loan.status}</div>
             </div>
         </div>
     );

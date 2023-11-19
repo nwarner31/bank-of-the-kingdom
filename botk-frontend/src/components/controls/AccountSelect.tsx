@@ -1,28 +1,26 @@
 import {Account} from "../../models";
-import {ChangeEvent} from "react";
+import {ChangeEvent, InputHTMLAttributes} from "react";
+import '../../common.css';
 
-interface asprops {
+interface asprops extends InputHTMLAttributes<HTMLSelectElement>{
     label: string,
     accounts: Account[],
-    name?: string,
-    value: number,
     updateValue: ((ewValue: number, name?: string) => void) | ((newValue: number) => void)
 }
 
-function AccountSelect(props: asprops) {
-    const accounts = props.accounts;
+function AccountSelect({label, accounts, updateValue, className, ...rest}: asprops) {
     function setValue(e: ChangeEvent<HTMLSelectElement>) {
-        const newValue = Number(e.target.value)
-        props.updateValue(newValue, props.name);
+        const newValue = Number(e.target.value);
+        updateValue(newValue, rest.name);
 
     }
     return (
-        <div>
+        <div className={className}>
             <div>
-                {props.label}:
+                {label}:
             </div>
             <div>
-                <select value={props.value} onChange={setValue}>
+                <select onChange={setValue} {...rest} className="full-width">
                     <option value={-1} >Select an account</option>
                         {accounts.map((account: Account) => <option key={account.id} value={account.id}>{account.id}: {account.account_name} - {account.account_type} (Balance: {account.balance})</option>
                     )}

@@ -1,7 +1,8 @@
 import HoverButton from "../controls/HoverButton";
+import TextInput from "../controls/TextInput";
 import {ChangeEvent, useState} from "react";
 import '../../Theming.css';
-import './Login.css';
+import '../../common.css';
 import properties from "../../utility/data/application.json";
 import {useDispatch} from "react-redux";
 import {Actions} from "../../store/my-data-store";
@@ -15,12 +16,12 @@ function Login() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-   function updateUsername(username: string) {
-        setUsername(username);
+   function updateUsername(event: ChangeEvent<HTMLInputElement>) {
+        setUsername(event.target.value);
     }
 
-    function updatePassword(password: string) {
-       setPassword(password)
+    function updatePassword(event: ChangeEvent<HTMLInputElement>) {
+       setPassword(event.target.value);
     }
 
     function cancel() {
@@ -39,7 +40,6 @@ function Login() {
                 console.log(response.status);
                 return response.json()
             }).then(data => {
-                //console.log(data);
 
                 if(data.customer) {
                     const customer = data.customer;
@@ -61,44 +61,21 @@ function Login() {
     }
 
     return (
-        <div className='main-color-bg login-page'>
-            <h1>Login Page</h1>
-            <div className='register-input-row'>
-                <LoginInput label='Username' name='username' value={username} isPassword={false} valueChange={updateUsername} />
-                <LoginInput label='Password' name='password' value={password} isPassword={true} valueChange={updatePassword} />
+        <div className='main-color-bg '>
+            <div className="narrow-page">
+            <h1 className="headline">Login Page</h1>
+            <div>
+                <TextInput label="Username" value={username} type="text" onChange={updateUsername} className="line-space" />
+                <TextInput label="Password" value={password} type="password" onChange={updatePassword} className="line-space" />
             </div>
             <div>
-                <HoverButton text='Cancel' baseClass='secondary-color-bg' hoverClass='secondary-color-text' className='register-button' clickAction={cancel} />
-                <HoverButton text='Login' baseClass='secondary-color-bg' hoverClass='secondary-color-text' className='register-button' clickAction={loginUser} />
+                <HoverButton text='Cancel' baseClass='secondary-color-bg' hoverClass='secondary-color-text' className='smaller-button small-spacing' clickAction={cancel} />
+                <HoverButton text='Login' baseClass='secondary-color-bg' hoverClass='secondary-color-text' className='smaller-button small-spacing' clickAction={loginUser} />
             </div>
+        </div>
         </div>
     );
 }
 
-interface liprops {
-    label: string,
-    name: string,
-    value: string,
-    isPassword: boolean,
-    valueChange: (newValue: string) => void
-}
-
-function LoginInput(props: liprops) {
-    function valueChanged(event: ChangeEvent<HTMLInputElement>) {
-        const newValue = event.target.value ?? '';
-        props.valueChange(newValue);
-    }
-
-    return (
-        <div className='register-input-column'>
-            <div className='register-input-label'>
-                <label>{props.label}:</label>
-            </div>
-            <div className='register-input-div'>
-                <input type={props.isPassword ? 'password' : 'text'} name={props.name} className='register-input' onChange={valueChanged} value={props.value} />
-            </div>
-        </div>
-    );
-}
 
 export default Login;

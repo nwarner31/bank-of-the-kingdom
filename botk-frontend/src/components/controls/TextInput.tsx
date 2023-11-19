@@ -7,7 +7,7 @@ interface inputProps extends InputHTMLAttributes<HTMLInputElement> {
     label: string,
     hasError?: boolean,
     clearError?: (field: string) => void,
-    className?: string,
+    //className?: string,
 }
 
 const TextInput: FC<inputProps> = ({label, className, hasError, clearError, ...rest})=> {

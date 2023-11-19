@@ -1,9 +1,10 @@
 import {useSelector, useDispatch} from "react-redux";
 import {useNavigate} from "react-router-dom";
-import './Register.css';
+import '../../common.css';
 import '../../Theming.css';
 import { ChangeEvent, useState} from "react";
 import HoverButton from "../controls/HoverButton";
+import TextInput from "../controls/TextInput";
 import properties from '../../utility/data/application.json';
 import {Actions} from "../../store/my-data-store";
 
@@ -25,7 +26,9 @@ function Register() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    function updateUserInfo(fieldName: string, newValue: string) {
+    function updateUserInfo(event: ChangeEvent<HTMLInputElement>) {
+        const fieldName = event.target.name;
+        const newValue = event.target.value
         if (fieldName === "password2") {
             setPassword2(newValue)
         } else {
@@ -99,72 +102,37 @@ function Register() {
     return (
     <>
 
-        <div className='register-page main-color-bg' >
-            <div className='register-page-contents'>
-            <h1>Register Page</h1>
-            <div className='register-input-row'>
-                <RegisterInput label='First Name' name='first_name' value={userInfo.first_name} hasError={errorInfo.first_name} isPassword={false} valueChange={updateUserInfo} clearError={clearError} />
-                <RegisterInput label='Last Name' name='last_name' value={userInfo.last_name} hasError={errorInfo.last_name} isPassword={false} valueChange={updateUserInfo} clearError={clearError} />
+        <div className='main-color-bg' >
+            <div className='wide-page'>
+            <h1 className="headline">Register Page</h1>
+            <div className='float-container line-space'>
+                <TextInput label="First Name" name="first_name" value={userInfo.first_name} hasError={errorInfo.first_name} type="text" onChange={updateUserInfo} clearError={clearError} className="main-column float-left" />
+                <TextInput label="Last Name" name="last_name" value={userInfo.last_name} hasError={errorInfo.last_name} type="text" onChange={updateUserInfo} clearError={clearError} className="main-column float-left mobile-line" />
             </div>
-            <div className='register-input-row'>
-                <RegisterInput label='Address 1' name='address1' value={userInfo.address1} hasError={errorInfo.address1} isPassword={false} valueChange={updateUserInfo} clearError={clearError} />
-                <RegisterInput label='Address 2' name='address2' hasError={errorInfo.address2} value={userInfo.address2} isPassword={false} valueChange={updateUserInfo} clearError={clearError} />
+            <div className='float-container line-space'>
+                <TextInput label="Address 1" name="address1" value={userInfo.address1} hasError={errorInfo.address1} type="text" onChange={updateUserInfo} clearError={clearError} className="main-column float-left" />
+                <TextInput label="Address 2" name="address2" value={userInfo.address2} type="text" onChange={updateUserInfo} className="main-column float-left mobile-line" />
             </div>
 
-            <div className='register-input-row'>
-                <RegisterInput label='City' name='city' value={userInfo.city} hasError={errorInfo.city} isPassword={false} valueChange={updateUserInfo} clearError={clearError} />
-                <RegisterInput label='Kingdom' name='kingdom' value={userInfo.kingdom} hasError={errorInfo.kingdom} isPassword={false} valueChange={updateUserInfo} clearError={clearError} />
+            <div className='float-container line-space'>
+                <TextInput label="City" name="city" value={userInfo.city} hasError={errorInfo.city} type="text" onChange={updateUserInfo} clearError={clearError} className="main-column float-left" />
+                <TextInput label="Kingdom" name="kingdom" value={userInfo.kingdom} hasError={errorInfo.kingdom} type="text" onChange={updateUserInfo} clearError={clearError} className="main-column float-left mobile-line" />
             </div>
-                <div className='register-input-row'>
-                    <RegisterInput label='Email' name='email' value={userInfo.email} hasError={errorInfo.email} isPassword={false} valueChange={updateUserInfo} clearError={clearError} />
-                    <RegisterInput label='Username' name='username' value={userInfo.username} hasError={errorInfo.username} isPassword={false} valueChange={updateUserInfo} clearError={clearError} />
+                <div className='float-container line-space'>
+                    <TextInput label="Email" name="email" value={userInfo.email} hasError={errorInfo.email} type="text" onChange={updateUserInfo} clearError={clearError} className="main-column float-left" />
+                    <TextInput label="Username" name="username" value={userInfo.username} hasError={errorInfo.username} type="text" onChange={updateUserInfo} clearError={clearError} className="main-column float-left mobile-line" />
                 </div>
-                <div className='register-input-row'>
-                    <RegisterInput label='Password' name='password' value={userInfo.password} isPassword={true} hasError={errorInfo.password} valueChange={updateUserInfo} clearError={clearError} />
-                    <RegisterInput label='Reenter Password' name='password2' value={password2} isPassword={true} hasError={errorInfo.password2} valueChange={updateUserInfo} clearError={clearError} />
+                <div className='float-container line-space'>
+                    <TextInput label="Password" name="password" value={userInfo.password} type="password" hasError={errorInfo.password} onChange={updateUserInfo} clearError={clearError} className="main-column float-left" />
+                    <TextInput label="Reenter Password" name="password2" value={password2} type="password" hasError={errorInfo.password2} onChange={updateUserInfo} clearError={clearError} className="main-column float-left mobile-line" />
                 </div>
                 <div>
-                    <HoverButton text='Cancel' baseClass='secondary-color-bg' hoverClass='secondary-color-text' className='register-button' clickAction={cancel} />
-                    <HoverButton text='Register' baseClass='secondary-color-bg' hoverClass='secondary-color-text' className='register-button' clickAction={registerUser} />
+                    <HoverButton text='Cancel' baseClass='secondary-color-bg' hoverClass='secondary-color-text' className='smaller-button small-spacing' clickAction={cancel} />
+                    <HoverButton text='Register' baseClass='secondary-color-bg' hoverClass='secondary-color-text' className='smaller-button small-spacing' clickAction={registerUser} />
                 </div>
             </div>
         </div>
     </>
-    );
-}
-
-interface riprops {
-    label: string,
-    name: string,
-    value: string,
-    isPassword: boolean,
-    hasError: boolean,
-    valueChange: (field: string, newValue: string) => void,
-    clearError: (field: string) => void
-}
-
-function RegisterInput(props: riprops) {
-    function valueChanged(event: ChangeEvent<HTMLInputElement>) {
-        const newValue = event.target.value ?? '';
-        props.valueChange(props.name, newValue);
-    }
-
-    function hasFocus() {
-        props.clearError(props.name);
-    }
-
-    return  (
-        <div className='register-input-column'>
-            <div className='register-input-label'>
-                <label>{props.label}{props.hasError && <span className='register-input-error'>Error</span>}:</label>
-            </div>
-            <div className='register-input-div'>
-                <input type={props.isPassword ? 'password' : 'text'} name={props.name} className='register-input' onChange={valueChanged} value={props.value} onFocus={hasFocus} />
-                <span className="register-input-error-icon">
-                    {props.hasError && <img src={`./resources/images/x.png`} />}
-                </span>
-            </div>
-        </div>
     );
 }
 
