@@ -1,16 +1,20 @@
 import {Navigate, useParams} from "react-router-dom";
 import {useSelector} from "react-redux";
+import {SetStateAction, useEffect, useRef, useState} from "react";
+import toast from "react-hot-toast";
 
 import HoverButton from "../controls/HoverButton";
 import TextInput from "../controls/TextInput";
+import {ReduxState} from "../../store/my-data-store";
+import {Account, Transaction} from "../../models";
 
 import '../../Theming.css';
 import '../../common.css';
-import properties from '../../utility/data/application.json'
-import {SetStateAction, useEffect, useRef, useState} from "react";
+import properties from '../../utility/data/application.json';
 
 
-function Account() {
+
+function AccountPage() {
     const {accountId} = useParams();
     // variable for if the inputs to deposit or withdraw are visible
     const [dwHidden, setDwHidden] = useState(true);
@@ -18,11 +22,10 @@ function Account() {
     const [dw, setDw] = useState('deposit');
     const [amount, setAmount] = useState(0);
     // variable to hold the transaction history
-    const [transactions, setTransactions] = useState(null);
-    const [account, setAccount] = useState(null);
+    const [transactions, setTransactions] = useState<Transaction[]>([]);
+    const [account, setAccount] = useState<Account | null>(null);
 
-    // @ts-ignore
-    const token = useSelector(state => state.token);
+    const token = useSelector((state: ReduxState) => state.token);
 
 
     const dataFetch = useRef(false);
@@ -49,22 +52,19 @@ function Account() {
 
     }, []);
 
-    // @ts-ignore
-    const loggedIn = useSelector(state => state.loggedIn);
+    const loggedIn = useSelector((state: ReduxState) => state.loggedIn);
     if (!loggedIn) {
         return (<Navigate to='/' replace={true}/>);
     }
 
     let transactionData: JSX.Element = <></>;
-    // @ts-ignore
-    if(transactions === undefined || transactions === null || transactions.length === 0) {
+    if(transactions.length === 0) {
         transactionData = (
             <div>
                 This account does not have any transactions.
             </div>
         );
     } else {
-        // @ts-ignore
         transactionData = Array.isArray(transactions) ? (<div>{transactions.map(transaction =>
                 <TransactionDetails transaction={transaction} />
             )}
@@ -97,19 +97,26 @@ function Account() {
         setAmount(0);
     }
     function submitClicked() {
-        // @ts-ignore
-        if (amount > 0 && (dw === 'deposit' || (account !== null && amount < account.balance))) {
+        if (amount <= 0) {
+            toast.error("The amount must be greater than zero");
+        } else if (dw === 'withdraw' && (account !== null && amount > account.balance)) {
+            toast.error("You cannot withdraw more than is in the account");
+        } else {
             const body = JSON.stringify({transaction_type: dw, amount: amount});
             fetch(properties.url + `/account/${accountId}/transaction`,
                 {method: 'POST', body: body, headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization':  `Bearer ${token}`
+                        'Content-Type': 'application/json',
+                        'Authorization':  `Bearer ${token}`
                     }}).then(response => {
-                        return response.json();
+                return response.json();
             }).then(data => {
                 console.log(data);
-                // @ts-ignore
-                setTransactions(prevState => {return [...prevState, data]});
+                if (data.id) {
+                    setTransactions(prevState => {return [...prevState, data]});
+                } else {
+                    toast.error("There was a server error");
+                }
+
             })
         }
     }
@@ -148,12 +155,7 @@ function Account() {
 }
 
 interface tdprops {
-    transaction: {
-        transaction_type: string,
-        amount: number,
-        balance_after: number,
-        date: string
-    },
+    transaction: Transaction,
     className?: string
 }
 function TransactionDetails(props: tdprops) {
@@ -172,4 +174,4 @@ function TransactionDetails(props: tdprops) {
     );
 }
 
-export default Account;
+export default AccountPage;

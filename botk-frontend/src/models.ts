@@ -35,6 +35,15 @@ export interface Payment {
     payment_from: number
 }
 
+export interface Transaction {
+    id?: number,
+    account_id: number,
+    transaction_type: string,
+    amount: number,
+    balance_after?: number,
+    date?: string
+}
+
 export interface Theme {
     mainColor: string,
     mainTextColor: string,

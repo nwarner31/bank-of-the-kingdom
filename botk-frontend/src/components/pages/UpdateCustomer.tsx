@@ -1,6 +1,7 @@
 import {Navigate, useNavigate} from "react-router-dom";
 import {useSelector, useDispatch} from "react-redux";
 import {ChangeEvent, useState} from "react";
+import toast from "react-hot-toast";
 
 import TextInput from "../controls/TextInput";
 import HoverButton from "../controls/HoverButton";
@@ -86,7 +87,10 @@ function UpdateCustomer() {
                 if(data.id) {
                     console.log(data);
                     dispatch({type: Actions.UpdateUser, payload: data});
+                    toast("User info updated");
                     navigate("/dashboard");
+                } else {
+                    toast.error("There was a server error", {className: "error-toast"});
                 }
             });
         }

@@ -1,6 +1,7 @@
 import HoverButton from "../controls/HoverButton";
 import TextInput from "../controls/TextInput";
 import {ChangeEvent, useState} from "react";
+import toast from 'react-hot-toast';
 import '../../Theming.css';
 import '../../common.css';
 import properties from "../../utility/data/application.json";
@@ -31,7 +32,7 @@ function Login() {
     function loginUser() {
         console.log(username + " " + password);
         if (username.trim() === "" || password.trim() === "") {
-
+            toast.error("Please enter a username and a password", {className: 'error-toast'});
         } else {
             const body = JSON.stringify({"username": username, "password": password});
             fetch(properties.url+'/login', {method: 'POST',
@@ -52,10 +53,10 @@ function Login() {
 
                     navigate("/dashboard");
                 } else {
-                    console.log("Error");
+                    toast.error("Incorrect user information", {className: "error-toast"});
                 }
             }).catch(error => {
-                console.log(error);
+                toast.error("Server error", {className: "error-toast"});
             });
         }
     }

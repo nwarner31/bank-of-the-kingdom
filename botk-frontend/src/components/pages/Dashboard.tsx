@@ -2,39 +2,34 @@ import { useSelector } from "react-redux";
 import {Link, Navigate} from "react-router-dom";
 
 import HoverButton from "../controls/HoverButton";
+import {ReduxState} from "../../store/my-data-store";
+import {Account} from "../../models";
 import '../../Theming.css';
 import '../../common.css';
 
 function Dashboard() {
-    // @ts-ignore
-    const customer = useSelector(state => state.customer);
-    // @ts-ignore
-    const accounts = useSelector(state => state.accounts);
-    // @ts-ignore
-    const loggedIn = useSelector(state => state.loggedIn);
 
-    // @ts-ignore
-    const loans = useSelector(state => state.loans);
+    const customer = useSelector((state: ReduxState) => state.customer);
+    const accounts = useSelector((state: ReduxState) => state.accounts);
+    const loggedIn = useSelector((state: ReduxState) => state.loggedIn);
+    const loans = useSelector((state: ReduxState) => state.loans);
     if (!loggedIn) {
         return (<Navigate to='/' replace={true}/>);
     }
     let accountData: JSX.Element = <></>;
-    const accountGroups: any = {};
+    const accountGroups: { [type: string]: Account[] } = {};
     if (accounts.length === 0) {
         accountData = <h3>You do not have any accounts.</h3>;
     } else {
         // Organizes accounts based upon account type
-        accounts.forEach((account: { account_type: string; }) => {
+        accounts.forEach((account: Account) => {
             if (account.account_type in accountGroups) {
-                // @ts-ignore
                 accountGroups[account.account_type].push(account)
             } else {
-                // @ts-ignore
                 accountGroups[account.account_type] = [account];
             }
         });
         // Displays the accounts grouped by account type
-        // @ts-ignore
         accountData = <div>{Object.keys(accountGroups).map(type =>
             <div key={type}><h3>{type}</h3>
                 {accountGroups[type].map((account: any) => <Link to={`/account/${account.id}`} key={account.id}><AccountDetails account={account} className='secondary-color-bg small-vertical-spacing' /></Link>)}
@@ -45,7 +40,7 @@ function Dashboard() {
         <div className='main-color-bg'>
             <div className='wide-page'>
                 <h1 className="headline">Dashboard Page</h1>
-                <div>{customer.first_name}</div>
+                <div>{customer?.first_name}</div>
                 <div className="float-container">
                     <div className='float-left main-column'>
                         <h2>Accounts</h2>

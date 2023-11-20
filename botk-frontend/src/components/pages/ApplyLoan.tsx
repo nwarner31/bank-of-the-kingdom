@@ -5,9 +5,10 @@ import {ChangeEvent, useState} from "react";
 import TextInput from "../controls/TextInput";
 import HoverButton from "../controls/HoverButton";
 import properties from '../../utility/data/application.json';
-import {Actions} from "../../store/my-data-store";
+import {Actions, ReduxState} from "../../store/my-data-store";
 import '../../common.css';
 import '../../Theming.css';
+import toast from "react-hot-toast";
 
 
 
@@ -19,10 +20,9 @@ function ApplyLoan() {
     const [errorInfo, setErrorInfo] = useState(initialErrorState);
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    // @ts-ignore
-    const loggedIn = useSelector(state => state.loggedIn);
-    // @ts-ignore
-    const token = useSelector(state => state.token);
+
+    const loggedIn = useSelector((state: ReduxState) => state.loggedIn);
+    const token = useSelector((state: ReduxState) => state.token);
     if (!loggedIn) {
         return (<Navigate to='/' replace={true}/>);
     }
@@ -69,6 +69,12 @@ function ApplyLoan() {
             }
         }
         if (isValid) {
+            if (Number(loanInfo.loan_amount) <= 0) {
+                toast.error("The loan must be for more that zero", {className: "error-toast"});
+                return;
+            } else if (Number(loanInfo.customer_income) <= 0) {
+                toast.error("Your income must be greater than zero");
+            }
             const loan_amount = Number(loanInfo.loan_amount);
             const customer_income = Number(loanInfo.customer_income);
             const customer_credit_score = Number(loanInfo.customer_credit_score);
@@ -82,7 +88,10 @@ function ApplyLoan() {
             }).then(data => {
                 if (data.id) {
                     dispatch({type: Actions.AddLoan, payload: {loan: data}});
+                    toast("You have successfully applied for a loan");
                     navigate("/dashboard");
+                } else {
+                    toast.error("There was a server error", {className: "error-toast"})
                 }
             });
         }

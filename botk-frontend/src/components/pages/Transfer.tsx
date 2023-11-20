@@ -1,30 +1,29 @@
 import {useDispatch, useSelector} from "react-redux";
 import {Navigate, useNavigate} from "react-router-dom";
-import {SetStateAction, useEffect, useRef, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 
 import properties from '../../utility/data/application.json';
 import '../../Theming.css';
 import '../../common.css';
-import {Actions} from '../../store/my-data-store';
+import {Actions, ReduxState} from '../../store/my-data-store';
+import {Account} from "../../models";
 import HoverButton from "../controls/HoverButton";
 import AccountSelect from "../controls/AccountSelect";
 import TextInput from "../controls/TextInput";
+import toast from "react-hot-toast";
 
 function Transfer() {
-    // @ts-ignore
-    const loggedIn = useSelector(state => state.loggedIn);
-    // @ts-ignore
-    const token = useSelector(state => state.token);
-    // @ts-ignore
-    const acc = useSelector(state => state.accounts);
+
+    const loggedIn = useSelector((state: ReduxState) => state.loggedIn);
+    const token = useSelector((state: ReduxState) => state.token);
+    const acc = useSelector((state: ReduxState) => state.accounts);
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    //const [accounts, setAccounts] = useState([]);
     const [toActive, setToActive] = useState(false);
     const [fromAccount, setFromAccount] = useState(-1);
     const [toAccount, setToAccount] = useState(-1);
-    const [toAccounts, setToAccounts] = useState([]);
+    const [toAccounts, setToAccounts] = useState<Account[]>([]);
     const [amount, setAmount] = useState('');
 
     function updateFrom(from: number) {
@@ -34,7 +33,7 @@ function Transfer() {
             setToAccount(-1);
         } else {
             setToActive(true);
-            setToAccounts(acc.filter((account: { id: number; }) => account.id !== from));
+            setToAccounts(acc.filter((account: Account) => account.id !== from));
             console.log(toAccounts);
         }
     }
@@ -95,18 +94,21 @@ function Transfer() {
     }
 
     function submitTransfer() {
-        const fromIndex = acc.findIndex((a: { id: number; }) => a.id === fromAccount);
+        if (fromAccount === -1 || toAccount === -1) {
+
+            return;
+        } else if (amount === "" || Number(amount) <= 0) {
+
+            return;
+        }
+        const fromIndex = acc.findIndex((a: Account) => a.id === fromAccount);
         const from = {...acc[fromIndex]};
-        const toIndex = acc.findIndex((a: { id: number; }) => a.id === toAccount)
+        const toIndex = acc.findIndex((a: Account) => a.id === toAccount)
         const to = {...acc[toIndex]};
         console.log(from);
         console.log(to);
         // ToDo finish with toasts
-        if (from === undefined || to === undefined) {
-
-        } else if (amount === "" || Number(amount) <= 0) {
-
-        } else if (Number(amount) > from.balance) {
+        if (Number(amount) > from.balance) {
 
         } else {
             const body = JSON.stringify({from_id: fromAccount, to_id: toAccount, amount: Number(amount)});
@@ -121,8 +123,10 @@ function Transfer() {
                     to.balance += Number(amount);
                     console.log(acc);
                     dispatch({type: Actions.UpdateAccounts, payload: {accounts: [to, from]}});
+                    toast("Transfer complete");
                     navigate("/dashboard");
-                    // ToDo finish with toast
+                } else {
+                    toast.error("There was a server error", {className: "error-toast"});
                 }
             });
         }

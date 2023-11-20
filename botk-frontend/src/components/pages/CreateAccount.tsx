@@ -4,21 +4,19 @@ import {SetStateAction, useState} from "react";
 
 import '../../Theming.css';
 import '../../common.css';
-import {Actions} from '../../store/my-data-store';
+import {Actions, ReduxState} from '../../store/my-data-store';
 import properties from '../../utility/data/application.json';
 import HoverButton from "../controls/HoverButton";
 import TextInput from "../controls/TextInput";
+import toast from "react-hot-toast";
 
 function CreateAccount() {
 
     const [accountType, setAccountType] = useState('checking');
     const [accountName, setAccountName] = useState('');
 
-
-    // @ts-ignore
-    const loggedIn = useSelector(state => state.loggedIn);
-    // @ts-ignore
-    const token = useSelector(state => state.token);
+    const loggedIn = useSelector((state: ReduxState) => state.loggedIn);
+    const token = useSelector((state: ReduxState) => state.token);
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -40,7 +38,7 @@ function CreateAccount() {
 
         // Validate Account Name
         if (accountName.trim() === "") {
-            //return false;
+            toast.error("You must enter an account name", {className: "error-toast"});
         } else {
             const body = JSON.stringify({account_type: accountType, account_name: accountName});
 
@@ -49,9 +47,14 @@ function CreateAccount() {
                 'Authorization': `Bearer ${token}`}}).then(response => {
                     return response.json();
             }).then(data => {
-                console.log(data);
-                dispatch({type: Actions.AddAccount, payload: {account: data}});
-                navigate('/dashboard');
+                if(data.id) {
+                    dispatch({type: Actions.AddAccount, payload: {account: data}});
+                    toast("Account created");
+                    navigate('/dashboard');
+                } else {
+                    toast.error("There was a server error", {className: "error-toast"});
+                }
+
             });
         }
     }

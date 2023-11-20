@@ -140,6 +140,11 @@
     margin: 10px 2%;
 }
 
+.error-toast {
+    background-color: red;
+    font-weight: 800;
+}
+
 @media screen and (max-width: 800px) and (min-width: 550px), (max-width: 400px) {
     .wp-sub-column {
         width: 95%;

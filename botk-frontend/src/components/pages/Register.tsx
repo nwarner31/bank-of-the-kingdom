@@ -1,4 +1,4 @@
-import {useSelector, useDispatch} from "react-redux";
+import {useDispatch} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import '../../common.css';
 import '../../Theming.css';
@@ -17,8 +17,6 @@ function Register() {
     const initialErrorState = {"first_name": false, "last_name": false, "address1": false,
         "address2": false, "city": false, "kingdom": false, "email": false, "username": false,
         "password": false, "password2": false};
-    // @ts-ignore
-    const theme = useSelector(state => state.theme);
     const [userInfo, setUserInfo] = useState(initialUserState);
     const [errorInfo, setErrorInfo] = useState(initialErrorState);
     const [password2, setPassword2] = useState("")

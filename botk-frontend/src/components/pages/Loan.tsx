@@ -11,6 +11,7 @@ import {Loan as LoanModel, Payment, Account} from '../../models';
 import {Actions} from '../../store/my-data-store';
 import '../../common.css';
 import '../../Theming.css';
+import toast from "react-hot-toast";
 
 
 function Loan() {
@@ -95,6 +96,8 @@ function Loan() {
                                 dispatch({type: Actions.UpdateLoan, payload: data});
                                 paymentAccount.balance -= numAmount;
                                 dispatch({type: Actions.UpdateAccounts, payload: {accounts: [paymentAccount]}})
+                            } else {
+                                toast.error("There was a server error", {className: "error-toast"});
                             }
 
                 });
@@ -106,12 +109,13 @@ function Loan() {
         let isValid = true;
         if (payment_from === -1) {
             isValid = false;
-            // ToDo - add error for selects
+            toast.error("Please select an account", {className: "error-toast"});
         }
         if(isNaN(Number(amount)) || amount === "" || Number(amount) < 0) {
             setAmountError(true);
             setAmount("");
             isValid = false;
+            toast.error("Please enter a valid amount", {className: "error-toast"});
         }
         return isValid;
     }

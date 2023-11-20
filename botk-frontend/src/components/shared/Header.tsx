@@ -2,21 +2,21 @@ import './Header.css';
 import '../../common.css'
 import properties from "../../utility/data/application.json";
 import HoverButton from "../controls/HoverButton";
-import { Actions } from '../../store/my-data-store';
+import { Actions, ReduxState } from '../../store/my-data-store';
 import {useDispatch, useSelector} from "react-redux";
 import {Link, useNavigate} from "react-router-dom";
 import { useMediaQuery } from "react-responsive";
 import '../../Theming.css';
 
 function Header() {
-    // @ts-ignore
-    const theme = useSelector(state => state.theme);
-    // @ts-ignore
-    const loggedIn = useSelector(state => state.loggedIn);
+
+    const theme = useSelector((state: ReduxState) => state.theme);
+
+    const loggedIn = useSelector((state: ReduxState) => state.loggedIn);
 
     const useMobileLayout = useMediaQuery({query: '(max-width: 600px)'});
-    // @ts-ignore
-    const token = useSelector(state => state.token);
+
+    const token = useSelector((state: ReduxState) => state.token);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     function logout() {
@@ -45,7 +45,7 @@ function Header() {
             <div className='nav-body'>
                 <span className='left-content'>
                     <Link to='/' >
-                    <img src={`./resources/images/${theme.headImg}`} className='header-image' />
+                    <img alt="Theme Icon" src={`./resources/images/${theme.headImg}`} className='header-image'  />
                     <span className='header-title-box'>
                         <span className='header-title header-main-title'><h1 className='headline title-headline'>Bank of the Kingdom</h1></span>
                         <span className='header-title'>Trusted by Toads and Goombas</span>
